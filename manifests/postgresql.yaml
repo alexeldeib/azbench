@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name postgresql
+  labels:
+    azbench: ""
+    app: *name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - pgbench
+      #       topologyKey: kubernetes.io/hostname
+      containers:
+      - image: alexeldeib/postgresql:latest
+        imagePullPolicy: Always
+        # command: ["sleep", "infinity"]
+        name: postgresql
+        env:
+        - name: JOB_NAME
+          value: "bench1"
+        - name: SCALE_FACTOR
+          value: "600"
+        - name: DB_USER 
+          valueFrom:
+            secretKeyRef:
+              name: pg-config
+              key: PGUSER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pg-config
+              key: PGPASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: pg-config
+              key: PGDATABASE
+        ports:
+          - containerPort: 5432
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &name postgresql
+  labels:
+    azbench: ""
+    app: *name
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+  selector:
+    app: *name
+---
