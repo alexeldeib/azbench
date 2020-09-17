@@ -2,7 +2,17 @@
 
 This repo provides a basic benchmarking setup using pgbench on Kubernetes clusters.
 
+## Standard_D4s_v3, 2TB managed data disk.
+## Standard_D4s_v3, 2TB managed OS disk workload.
+## Standard_D4s_v3, 60 GB ephemeral OS disk workload.
+
+## Standard_D64s_v3, 2TB managed OS disk workload.
+
 ## Standard_D64s_v3, 1.5TB ephemeral OS disk workload.
+
+This is a very large VM size, with ephemeral OS we should expect to have
+all VM IOPS available. We may not see much difference here since there
+is no resource pressure.
 
 ### noop scheduler
 
