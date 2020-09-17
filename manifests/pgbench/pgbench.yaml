@@ -33,15 +33,15 @@ spec:
         name: pgbench
         env:
         - name: JOB_NAME
-          value: "bench3"
+          value: "bench2"
         - name: JOBS
-          value: "4"
+          value: "16"
         - name: CLIENTS
-          value: "8"
+          value: "32"
         - name: DURATION
           value: "120"
         - name: SCALE_FACTOR
-          value: "9600"
+          value: "17280"
         - name: PGUSER 
           valueFrom:
             secretKeyRef:
@@ -65,6 +65,7 @@ spec:
         - name: pgpass
           readOnly: true
           mountPath: "/tmp/postgres"
+      terminationGracePeriodSeconds: 5
       volumes: 
       - name: pgpass
         secret:

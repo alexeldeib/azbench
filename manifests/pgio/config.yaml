@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgio-conf
+  labels:
+    app: pgio
+data:
+  pgio.conf: |
+    UPDATE_PCT=0
+    RUN_TIME=120
+    NUM_SCHEMAS=16
+    NUM_THREADS=16
+    WORK_UNIT=255
+    UPDATE_WORK_UNIT=8
+    SCALE=4G
+
+    DBNAME="$PGDATABASE"
+    CONNECT_STRING="-h $PGHOST -U $PGUSER"
+
+    CREATE_BASE_TABLE=TRUE

@@ -75,12 +75,6 @@ echo "Applying postgresql manifests"
 
 kustomize build manifests/postgresql | kubectl apply -f -
 
-# echo "Waiting for postgresql initialization to complete"
-
-# retry 10 kubectl logs -f $(kubectl get pod -l app=postgresql -o jsonpath="{.items[0].metadata.name}") &
-
-# read -n 1 -s -r
-
 echo "Applying pgbench manifests"
 
 kustomize build manifests/pgbench | kubectl apply -f -
@@ -90,3 +84,27 @@ echo "Waiting for pgbench completion"
 retry 10 kubectl logs -f $(kubectl get pod -l app=pgbench -o jsonpath="{.items[0].metadata.name}") &
 
 read -n 1 -s -r
+
+# echo "Checking logs for archive drop"
+
+# function get_wormhole() {
+#     echo "$(kubectl logs $(kubectl get pod -l app=pgio -o jsonpath="{.items[0].metadata.name}") | grep wormhole | tail -1)"
+# }
+
+# max_attempts=100
+# attempt_num=1
+# until [[ ! -z "$(get_wormhole)" ]]; do 
+#     if (( attempt_num == max_attempts )); then
+#         echo "Attempt $attempt_num failed and there are no more attempts left!"
+#         return 1
+#     else
+#         echo "Attempt $attempt_num failed! Trying again in $attempt_num seconds..."
+#         sleep $(( attempt_num++ ))
+#     fi
+# done
+
+# echo "Receiving file from wormhole"
+
+# $(get_wormhole) --accept-file
+
+# read -n 1 -s -r

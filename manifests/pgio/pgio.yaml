@@ -1,9 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: &name postgresql
+  name: &name pgio
   labels:
-    azbench: ""
     app: *name
 spec:
   replicas: 1
@@ -25,58 +24,53 @@ spec:
               - key: app
                 operator: In
                 values:
-                - pgbench
+                - postgresql
             topologyKey: kubernetes.io/hostname
       containers:
-      - image: alexeldeib/postgresql:latest
+      - image: alexeldeib/pgio:latest
         imagePullPolicy: Always
-        # command: ["sleep", "infinity"]
-        name: postgresql
+        name: *name
         env:
-        - name: "DATA_DIR"
-          value: "/var/lib/postgresql/12/main" # adjust for testing pvc, nvme, temp disk (ephemeral should be same as temp)
-        - name: DB_USER 
+        - name: PGUSER 
           valueFrom:
             secretKeyRef:
               name: pg-config
               key: PGUSER
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: pg-config
-              key: PGPASSWORD
-        - name: DB_NAME
+        - name: PGDATABASE
           valueFrom:
             secretKeyRef:
               name: pg-config
               key: PGDATABASE
-        
-        ports:
-          - containerPort: 5432
+        - name: PGPASSFILE 
+          value: "/tmp/postgres/.pgpass"
+        - name: PGHOST
+          value: "postgresql.default.svc.cluster.local"
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         resources: {}
-        securityContext:
-          privileged: true
         volumeMounts:
+        - name: pgpass
+          readOnly: true
+          mountPath: "/tmp/postgres"
+        - name: pgio-conf
+          mountPath: /opt/pgio
         - name: proc
           mountPath: /proc
       terminationGracePeriodSeconds: 5
-      volumes:
+      volumes: 
+      - name: pgpass
+        secret:
+          secretName: pg-config
+          items:
+          - key: PGPASS
+            path: .pgpass
+            mode: 0600
+      - name: pgio-conf
+        configMap:
+          name: pgio-conf
       - name: proc
         hostPath:
           path: /proc
           type: Directory
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: &name postgresql
-  labels:
-    azbench: ""
-    app: *name
-spec:
-  ports:
-  - port: 5432
-    protocol: TCP
-  selector:
-    app: *name
----

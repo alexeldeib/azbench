@@ -5,6 +5,18 @@ set -o pipefail
 
 DATA_DIR=${DATA_DIR:-"/var/lib/postgresql/12/main"}
 
+echo "Checking available memory"
+free -h
+
+echo "Reducing memory to 16G"
+# echo "YES" | sudo bash /opt/pgio/pgio_reduce_free_memory.sh 16
+# echo 0 | sudo tee /proc/sys/vm/nr_hugepages
+# echo 3 | sudo tee /proc/sys/vm/drop_caches
+# sudo sync;
+
+echo "Checking available memory after reducing"
+free -h
+
 # Start database
 /usr/lib/postgresql/12/bin/postgres -D ${DATA_DIR} -c config_file=/etc/postgresql/12/main/postgresql.conf &
 

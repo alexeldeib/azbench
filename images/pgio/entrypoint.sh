@@ -1,12 +1,15 @@
-#!/usr/bin/env bash	
-set -o errexit	
-set -o pipefail	
+#!/usr/bin/env bash
+set -o errexit
+set -o pipefail
+set -o nounset
 
-JOB_NAME=${JOB_NAME:-""}
-SCALE_FACTOR=${SCALE_FACTOR:-100}	
-DURATION=${DURATION:-60}	
-JOBS=${JOBS:-1}	
-CLIENTS=${CLIENTS:-$JOBS}	
+echo "Hello, PGIO!"
+
+echo "Copying setup config file to location"
+envsubst < /opt/pgio/pgio.conf > pgio.conf
+
+echo "Current config:"
+cat pgio.conf
 
 # Retries a command on failure.	
 # $1 - the max number of attempts	
@@ -31,7 +34,21 @@ retry() {
 
 retry 10 pg_isready -h $PGHOST -d $PGDATABASE -U $PGUSER	
 
-pgbench -i --no-vacuum -s ${SCALE_FACTOR} ${JOB_NAME} 
-pgbench -d "${PGDATABASE}" -h $PGHOST -U $PGUSER --no-vacuum --protocol=prepared --client=${CLIENTS} --jobs=${JOBS} --time=${DURATION} -s ${SCALE_FACTOR} ${JOB_NAME}	
+echo "Running setup with current config"
+bash setup.sh
+
+echo "Executing pgio"
+bash runit.sh
+
+tree -L 2
+
+echo "Listing output files"
+echo *.out
+
+echo "Compressiong output files to pgio-out.tar"
+tar -cf pgio-out.tar *.out
+
+echo "Serving up output archive"
+wormhole send pgio-out.tar
 
 sleep infinity
