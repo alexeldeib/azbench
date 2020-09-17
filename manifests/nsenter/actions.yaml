@@ -8,43 +8,46 @@ data:
   scheduler-none: |
     #!/usr/bin/env bash
     set -eux
+
     echo "Setting io scheduler"
-
     echo "none" > /sys/block/sda/queue/scheduler
-    
+  
     echo "Set scheduler, reading back for sanity"
-
     cat /sys/block/sda/queue/scheduler
 
     FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")
-
     if [[ -z "$FOUND" ]]; then
       echo "Expected to find no scheduler, but instead found: '$FOUND'"
     fi
+
+    echo "Permanently setting scheduler"
+    echo 'GRUB_CMDLINE_LINUX_DEFAULT="console=tty1 console=ttyS0 earlyprintk=ttyS0 elevator=none"' > /etc/default/grub.d/60-aks-dropin.cfg
+  
+    echo "Updating grub"
+    update-grub
+
+    echo "Grub updated, logging new boot config"
+    cat /boot/grub/grub.cfg
   scheduler-mq-deadline: |
     #!/usr/bin/env bash
     set -eux
-    echo "Setting io scheduler"
 
+    echo "Setting io scheduler"
     echo "mq-deadline" > /sys/block/sda/queue/scheduler
     
     echo "Set scheduler, reading back for sanity"
-
     cat /sys/block/sda/queue/scheduler
 
     FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")
-
     if [[ -z "$FOUND" ]]; then
       echo "Expected to find mq-deadline scheduler, but instead found: '$FOUND'"
     fi
 
     echo "Permanently setting scheduler"
-
     echo 'GRUB_CMDLINE_LINUX_DEFAULT="console=tty1 console=ttyS0 earlyprintk=ttyS0 elevator=mq-deadline"' > /etc/default/grub.d/60-aks-dropin.cfg
   
     echo "Updating grub"
     update-grub
 
     echo "Grub updated, logging new boot config"
-  
     cat /boot/grub/grub.cfg
