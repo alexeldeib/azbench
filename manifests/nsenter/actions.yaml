@@ -5,42 +5,33 @@ metadata:
   labels:
     app: nsenter
 data:
-  scheduler-none: |
-    #!/usr/bin/env bash
-    set -eux
-
-    echo "Setting io scheduler"
-    echo "none" > /sys/block/sda/queue/scheduler
-  
-    echo "Set scheduler, reading back for sanity"
-    cat /sys/block/sda/queue/scheduler
-
-    FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")
-    if [[ -z "$FOUND" ]]; then
-      echo "Expected to find no scheduler, but instead found: '$FOUND'"
-    fi
-
-    echo "Permanently setting scheduler"
-    echo 'GRUB_CMDLINE_LINUX_DEFAULT="console=tty1 console=ttyS0 earlyprintk=ttyS0 elevator=none"' > /etc/default/grub.d/60-aks-dropin.cfg
-  
-    echo "Updating grub"
-    update-grub
-
-    echo "Grub updated, logging new boot config"
-    cat /boot/grub/grub.cfg
   scheduler-mq-deadline: |
     #!/usr/bin/env bash
-    set -eux
+    set -ux
 
+    echo "Checking current scheduler"
+    if [[ -f /sys/block/sda/queue/scheduler ]]; then
+      FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")
+      if [[ -n "$FOUND" ]]; then
+        echo "Found scheduler already, will exit if permanently set"
+        exit 0
+      fi
+      FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=mq-deadline")
+      if [[ -n "$FOUND" ]]; then
+        echo "elevator permanently set, will exit early"
+        exit 0
+      fi
+    fi
+    
     echo "Setting io scheduler"
     echo "mq-deadline" > /sys/block/sda/queue/scheduler
-    
+  
     echo "Set scheduler, reading back for sanity"
     cat /sys/block/sda/queue/scheduler
 
     FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")
     if [[ -z "$FOUND" ]]; then
-      echo "Expected to find mq-deadline scheduler, but instead found: '$FOUND'"
+      echo "Expected to find scheduler mq-deadline, but instead found: '$FOUND'"
     fi
 
     echo "Permanently setting scheduler"
@@ -51,3 +42,53 @@ data:
 
     echo "Grub updated, logging new boot config"
     cat /boot/grub/grub.cfg
+
+    FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=mq-deadline")
+    if [[ -z "$FOUND" ]]; then
+      echo "Expected to find elevator mq-deadline, but instead found: '$FOUND'"
+    fi
+
+    reboot now
+  scheduler-noop: |
+    #!/usr/bin/env bash
+    set -ux
+
+    echo "Checking current scheduler"
+    if [[ -f /sys/block/sda/queue/scheduler ]]; then
+      FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")
+      if [[ -n "$FOUND" ]]; then
+        echo "Found none scheduler already, will exit if permanently set"
+      fi
+      FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop")
+      if [[ -n "$FOUND" ]]; then
+        echo "elevator permanently set, will exit early"
+        exit 0
+      fi
+    fi
+    
+    echo "Setting io scheduler"
+    echo "none" > /sys/block/sda/queue/scheduler
+  
+    echo "Set scheduler, reading back for sanity"
+    cat /sys/block/sda/queue/scheduler
+
+    FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")
+    if [[ -z "$FOUND" ]]; then
+      echo "Expected to find scheduler none, but instead found: '$FOUND'"
+    fi
+
+    echo "Permanently setting scheduler"
+    echo 'GRUB_CMDLINE_LINUX_DEFAULT="console=tty1 console=ttyS0 earlyprintk=ttyS0 elevator=noop"' > /etc/default/grub.d/60-aks-dropin.cfg
+  
+    echo "Updating grub"
+    update-grub
+
+    echo "Grub updated, logging new boot config"
+    cat /boot/grub/grub.cfg
+
+    FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop")
+    if [[ -z "$FOUND" ]]; then
+      echo "Expected to find elevator noop, but instead found: '$FOUND'"
+    fi
+
+    reboot now

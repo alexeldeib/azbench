@@ -3,9 +3,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-SCALE_FACTOR=${SCALE_FACTOR:-100}
-JOBS=${JOBS:-1}
-CLIENTS=${CLIENTS:-$JOBS}
 DATA_DIR=${DATA_DIR:-"/var/lib/postgresql/12/main"}
 
 # Start database
@@ -36,7 +33,5 @@ retry 10 pg_isready -h localhost -d "${DB_NAME}" -U postgres
 
 psql --command "CREATE USER ${DB_USER} WITH SUPERUSER PASSWORD '${DB_PASSWORD}';"
 psql --command "CREATE DATABASE ${DB_NAME} OWNER ${DB_USER} LC_COLLATE 'C.UTF-8' LC_CTYPE 'C.UTF-8'"
-
-pgbench -i "${DB_NAME}" -s ${SCALE_FACTOR} ${JOB_NAME}
 
 sleep infinity

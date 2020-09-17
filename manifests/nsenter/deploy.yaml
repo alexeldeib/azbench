@@ -19,7 +19,7 @@ spec:
       - image: alexeldeib/nsenter:latest
         imagePullPolicy: Always
         name: *name
-        args: ["scheduler-mq-deadline"]
+        args: ["scheduler-noop"]
         resources:
           requests:
             cpu: 100m

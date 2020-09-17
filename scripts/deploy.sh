@@ -75,11 +75,11 @@ echo "Applying postgresql manifests"
 
 kustomize build manifests/postgresql | kubectl apply -f -
 
-echo "Waiting for pgbench initialization to complete"
+# echo "Waiting for postgresql initialization to complete"
 
-retry 10 kubectl logs -f $(kubectl get pod -l app=postgresql -o jsonpath="{.items[0].metadata.name}") &
+# retry 10 kubectl logs -f $(kubectl get pod -l app=postgresql -o jsonpath="{.items[0].metadata.name}") &
 
-read -n 1 -s -r
+# read -n 1 -s -r
 
 echo "Applying pgbench manifests"
 
