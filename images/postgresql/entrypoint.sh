@@ -6,9 +6,10 @@ set -o pipefail
 SCALE_FACTOR=${SCALE_FACTOR:-100}
 JOBS=${JOBS:-1}
 CLIENTS=${CLIENTS:-$JOBS}
+DATA_DIR=${DATA_DIR:-"/var/lib/postgresql/12/main"}
 
 # Start database
-/usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf &
+/usr/lib/postgresql/12/bin/postgres -D ${DATA_DIR} -c config_file=/etc/postgresql/12/main/postgresql.conf &
 
 # Retries a command on failure.
 # $1 - the max number of attempts

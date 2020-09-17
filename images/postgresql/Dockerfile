@@ -1,3 +1,13 @@
+FROM debian:buster as sysstat
+
+RUN apt update && apt install -y git make automake clang
+
+WORKDIR /sysstat
+RUN git clone https://github.com/sysstat/sysstat /sysstat
+RUN CFLAGS=-static ./configure && CFLAGS=-static make -j$(nproc)
+
+RUN wc -c /sysstat/iostat | numfmt --to=iec-i
+
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -31,5 +41,6 @@ RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/12/main/pg_hba.con
 RUN echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
 
 COPY entrypoint.sh entrypoint.sh
+COPY --from=sysstat /sysstat/iostat /usr/local/bin/iostat
 
 ENTRYPOINT ["/entrypoint.sh"]

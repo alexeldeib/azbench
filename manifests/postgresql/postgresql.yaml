@@ -15,26 +15,30 @@ spec:
       labels:
         app: *name
     spec:
-      # affinity:
-      #   podAntiAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     - labelSelector:
-      #         matchExpressions:
-      #         - key: app
-      #           operator: In
-      #           values:
-      #           - pgbench
-      #       topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        agentpool: nodepool1
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - pgbench
+            topologyKey: kubernetes.io/hostname
       containers:
       - image: alexeldeib/postgresql:latest
         imagePullPolicy: Always
         # command: ["sleep", "infinity"]
         name: postgresql
         env:
+        - name: "DATA_DIR"
+          value: "/var/lib/postgresql/12/main" # adjust for testing pvc, nvme, local disks
         - name: JOB_NAME
-          value: "bench1"
+          value: "bench2"
         - name: SCALE_FACTOR
-          value: "600"
+          value: "2160"
         - name: DB_USER 
           valueFrom:
             secretKeyRef:

@@ -15,31 +15,33 @@ spec:
       labels:
         app: *name
     spec:
-      # affinity:
-      #   podAntiAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     - labelSelector:
-      #         matchExpressions:
-      #         - key: app
-      #           operator: In
-      #           values:
-      #           - postgresql
-      #       topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        agentpool: nodepool1
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - postgresql
+            topologyKey: kubernetes.io/hostname
       containers:
       - image: alexeldeib/pgbench:latest
         imagePullPolicy: Always
         name: pgbench
         env:
         - name: JOB_NAME
-          value: "bench1"
+          value: "bench2"
         - name: JOBS
-          value: "2"
+          value: "8"
         - name: CLIENTS
-          value: "4"
+          value: "16"
         - name: DURATION
           value: "120"
         - name: SCALE_FACTOR
-          value: "240"
+          value: "2160"
         - name: PGUSER 
           valueFrom:
             secretKeyRef:

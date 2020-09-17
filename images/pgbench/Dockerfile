@@ -1,3 +1,13 @@
+FROM debian:buster as sysstat
+
+RUN apt update && apt install -y git make automake clang
+
+WORKDIR /sysstat
+RUN git clone https://github.com/sysstat/sysstat /sysstat
+RUN CFLAGS=-static ./configure && CFLAGS=-static make -j$(nproc)
+
+RUN wc -c /sysstat/iostat | numfmt --to=iec-i
+
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,5 +28,6 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" > /etc/
 RUN apt-get update && apt-get install -y software-properties-common postgresql-12 postgresql-client-12 postgresql-contrib-12
 
 COPY entrypoint.sh entrypoint.sh
+COPY --from=sysstat /sysstat/iostat /usr/local/bin/iostat
 
 ENTRYPOINT ["/entrypoint.sh"]
