@@ -14,7 +14,7 @@ echo "data found: $METADATA"
 
 echo $METADATA | jq .
 
-SUBSCRIPTION="$(echo $METADATA | jq .compute.subscriptionId)"
+SUBSCRIPTION="$(echo $METADATA | jq -r .compute.subscriptionId)"
 GROUP="$(echo $METADATA | jq -r .compute.resourceGroupName)"
 IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
 
