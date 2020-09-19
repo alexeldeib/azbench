@@ -30,6 +30,20 @@ jobs:
       echo "##vso[task.setvariable variable=GROUP]${GROUP}"
       echo "Generated resource group name: '$GROUP'"
     displayName: generate resource group name
+  - bash: |
+      set -eux
+      export PATH=$PATH:${HOME}/bin
+      go env
+      mkdir ${HOME}/bin
+      mkdir ${HOME}/kustomize
+      cd ${HOME}/kustomize
+      go mod init tmp
+      go get sigs.k8s.io/kustomize/kustomize/v3@${KUSTOMIZE_VERSION}
+      cp $(go env GOPATH)/bin/kustomize ${HOME}/bin/kustomize
+      cd ${HOME}
+      rm -rf ${HOME}/kustomize
+      kustomize
+    displayName: install kustomize
   - bash: ./scripts/auth.sh
     displayName: "login to azure"
     env:

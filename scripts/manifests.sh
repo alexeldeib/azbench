@@ -2,6 +2,8 @@
 set -o nounset
 set -o pipefail
 
+export PATH=$PATH:${HOME}/bin
+
 BASH_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
 cd "$BASH_ROOT"
 
