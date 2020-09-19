@@ -31,7 +31,8 @@ az aks create -g "${GROUP}" \
     -l "${LOCATION}" \
     -c 3 \
     -k 1.17.7 \
-    --enable-managed-identity \
+    --service-principal "${CLIENT_APP}" \
+    --client-secret "${CLIENT_PASSWORD}" \
     --enable-node-public-ip \
     --load-balancer-sku standard \
     --network-plugin azure \

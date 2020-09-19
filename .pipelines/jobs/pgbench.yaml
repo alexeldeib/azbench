@@ -41,6 +41,10 @@ jobs:
     displayName: "initialize metrics capture"
   - bash: ./scripts/cluster.sh
     displayName: "provision azure resources"
+    env:
+      CLIENT_APP: $(app)
+      CLIENT_PASSWORD: $(password)
+      TENANT_ID: $(tenant)
   - bash: ./scripts/manifests.sh
     displayName: "apply manifests and run tests"
   - bash: ./scripts/emit.sh
