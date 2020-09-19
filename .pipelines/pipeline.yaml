@@ -11,7 +11,7 @@ pool:
   name: ace-test
 
 jobs:
-- template: .pipelines/jobs/matrix.yaml
+- template: jobs/matrix.yaml
 
 # - job: azbench
 #   timeoutInMinutes: 360 # 6 hours
