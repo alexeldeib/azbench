@@ -19,7 +19,6 @@ jobs:
         jobs: '${{ parameters.jobs }}'
         client: '${{ parameters.clients }}'
     - template: pgbench.yaml
-      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 2048GB managed', caching, scalefactor) }}
       parameters:
         vmsize: 'Standard_D4s_v3'
         osdisktype: 'Managed'
@@ -29,7 +28,6 @@ jobs:
         jobs: '${{ parameters.jobs }}'
         client: '${{ parameters.clients }}'
     - template: pgbench.yaml
-      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 100GB ephemeral', caching, scalefactor) }}
       parameters:
         vmsize: 'Standard_D4s_v3'
         osdisktype: 'Ephemeral'
@@ -40,7 +38,6 @@ jobs:
         client: '${{ parameters.clients }}'
         duration: '${{ parameters.duration }}'
     - template: pgbench.yaml
-      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 500GB managed', caching, scalefactor) }}
       parameters:
         vmsize: 'Standard_D16s_v3'
         osdisktype: 'Managed'
@@ -50,7 +47,6 @@ jobs:
         jobs: '${{ parameters.jobs }}'
         client: '${{ parameters.clients }}'
     - template: pgbench.yaml
-      displayName: ${{ format('Standard_D16s_v3, caching:{0}, scalefactor:{1}, 2048GB managed', caching, scalefactor) }}
       parameters:
         vmsize: 'Standard_D16s_v3'
         osdisktype: 'Managed'
@@ -60,7 +56,6 @@ jobs:
         jobs: '${{ parameters.jobs }}'
         client: '${{ parameters.clients }}'
     - template: pgbench.yaml
-      displayName: ${{ format('Standard_D16s_v3, caching:{0}, scalefactor:{1}, 100GB ephemeral', caching, scalefactor) }}
       parameters:
         vmsize: 'Standard_D16s_v3'
         osdisktype: 'Ephemeral'
