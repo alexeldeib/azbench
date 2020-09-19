@@ -51,6 +51,8 @@ until [[ ! -z "$(grep_logs)" ]]; do
     fi
 done
 
+set -x
+
 echo "Fetching logs for data parsing"
 get_logs
 get_logs > logs.out
