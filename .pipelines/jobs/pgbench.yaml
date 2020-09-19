@@ -9,6 +9,11 @@ parameters:
   scalefactor: ''
   datadir: '/var/lib/postgresql/12/main'
 
+variables:
+  CLIENT_APP: $(CLIENT_APP)
+  CLIENT_PASSWORD: $(CLIENT_PASSWORD)
+  TENANT_ID: $(TENANT_ID)
+
 jobs:
 - job: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
   displayName: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
