@@ -34,8 +34,8 @@ jobs:
       set -eux
       export PATH=$PATH:${HOME}/bin
       go env
-      mkdir ${HOME}/bin
-      mkdir ${HOME}/kustomize
+      mkdir -p ${HOME}/bin
+      mkdir -p ${HOME}/kustomize
       cd ${HOME}/kustomize
       go mod init tmp
       go get sigs.k8s.io/kustomize/kustomize/v3@${KUSTOMIZE_VERSION}
