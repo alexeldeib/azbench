@@ -36,6 +36,8 @@ jobs:
     displayName: initialize variables
   - bash: ./scripts/auth.sh
     displayName: "login to azure"
+  - bash: ./scripts/cli.sh
+    displayName: "install azure cli preview"
   - bash: ./scripts/capture.sh
     displayName: "initialize metrics capture"
   - bash: ./scripts/cluster.sh

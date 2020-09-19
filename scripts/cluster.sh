@@ -10,10 +10,6 @@ export CACHING="${CACHING:-}"
 
 set -o errexit # has to be after cat /dev/urandom piece
 
-echo "Adding aks cli extension"
-
-az extension add -n aks-preview
-
 echo "Creating resource group"
 
 az group create -g "${GROUP}" -l "${LOCATION}"
