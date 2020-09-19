@@ -51,6 +51,7 @@ RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/12/main/pg_hba.con
 RUN echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
 
 COPY entrypoint.sh entrypoint.sh
+COPY livez.sh livez.sh
 COPY --from=sysstat /sysstat/iostat /usr/local/bin/iostat
 
 ENTRYPOINT ["/entrypoint.sh"]

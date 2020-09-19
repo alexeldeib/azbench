@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgbench-config
+  labels:
+    app: pgbench
+data:
+  PGHOST: "postgresql.default.svc.cluster.local"
+  JOB_NAME: "bench1"
+  JOBS: "2"
+  CLIENTS: "4"
+  DURATION: "120"
+  SCALE_FACTOR: "120"
+---

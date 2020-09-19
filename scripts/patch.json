@@ -1,0 +1,11 @@
+{
+    "properties": {
+        "virtualMachineProfile": {
+            "storageProfile": {
+                "osDisk": {
+                    "caching": "${CACHING}"
+                }
+            }    
+        }    
+    }
+}

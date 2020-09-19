@@ -5,6 +5,33 @@ metadata:
   labels:
     app: nsenter
 data:
+  clear-cache: |
+    #!/usr/bin/env bash
+    set -x
+
+    if [[ -f /opt/cleared ]]; then
+      if [[ ! -z "$1" ]]; then
+        echo "received positional argument, forcing cleanup"
+        rm /opt/cleared || true
+      else
+        echo "Already ran, exiting"
+        exit 0
+      fi
+    fi
+
+    echo "Checking free memory"
+    free -h
+
+    echo "Clearing caches"
+    sync; echo 3 > /proc/sys/vm/drop_caches
+
+    echo "Checking free memory after cache drop"
+    free -h
+
+    echo "Dropping sentinel file"
+    touch /opt/cleared
+
+    reboot now
   scheduler-mq-deadline: |
     #!/usr/bin/env bash
     set -ux

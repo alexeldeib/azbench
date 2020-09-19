@@ -34,7 +34,7 @@ spec:
         name: postgresql
         env:
         - name: "DATA_DIR"
-          value: "/var/lib/postgresql/12/main" # adjust for testing pvc, nvme, temp disk (ephemeral should be same as temp)
+          value: "${DATA_DIR}" # adjust for testing pvc, nvme, temp disk (ephemeral should be same as temp)
         - name: DB_USER 
           valueFrom:
             secretKeyRef:
@@ -50,9 +50,22 @@ spec:
             secretKeyRef:
               name: pg-config
               key: PGDATABASE
-        
         ports:
           - containerPort: 5432
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - /livez.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - bash
+            - /livez.sh
+          initialDelaySeconds: 5
+          periodSeconds: 5
         resources: {}
         securityContext:
           privileged: true
