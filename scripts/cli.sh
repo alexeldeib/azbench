@@ -8,7 +8,7 @@ cd "$BASH_ROOT"
 
 set -x
 
-sudo apt install -y python3 python3-pip python3-virtualenv
+sudo apt install -y python3 python3-pip python3-virtualenv socat
 git clone https://github.com/Azure/azure-cli-extensions
 git clone https://github.com/Azure/azure-cli
 
