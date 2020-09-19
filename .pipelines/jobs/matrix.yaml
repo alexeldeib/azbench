@@ -6,12 +6,6 @@ parameters:
   scalefactors: [120, 1080, 4800]
   datadir: '/var/lib/postgresql/12/main'
 
-
-variables:
-  CLIENT_APP: $(CLIENT_APP)
-  CLIENT_PASSWORD: $(CLIENT_PASSWORD)
-  TENANT_ID: $(TENANT_ID)
-
 jobs:
 - ${{ each caching in parameters.cache_types }}:
   - ${{ each scalefactor in parameters.scalefactors }}:
