@@ -18,6 +18,7 @@ python3 -m virtualenv --python=/usr/bin/python3 venv
 
 set +o nounset
 source venv/bin/activate
+set -o nounset
 
 pip install azdev
 

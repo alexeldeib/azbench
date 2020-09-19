@@ -10,6 +10,10 @@ export CACHING="${CACHING:-}"
 
 set -o errexit # has to be after cat /dev/urandom piece
 
+set +o nounset
+source venv/bin/activate
+set -o nounset
+
 echo "Creating resource group"
 
 az group create -g "${GROUP}" -l "${LOCATION}"
