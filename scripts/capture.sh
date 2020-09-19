@@ -15,13 +15,15 @@ rm cert.pfx
 
 echo "Starting metrics container"
 
+docker stop /geneva || true
+docker stop geneva || true
 docker run \
     -d \
     -v $(pwd)/gcscert.pem:/etc/certs/gcscert.pem \
     -v $(pwd)/gcskey.pem:/etc/certs/gcskey.pem \
     --rm \
     -p 8125:8125/udp \
-    --name geneva \
+    --name "${GROUP}" \
     alexeldeib/metrics:latest \
     -StatsdPort 8125 \
     -Logger Console \
