@@ -16,15 +16,15 @@ jobs:
   workspace:
     clean: all
   steps:
-  - name: test vars
+  - displayName: test vars
     bash: |
       echo "setting var name"
       export GROUP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
       echo "##vso[task.setvariable variable=GROUP]${GROUP}"
       echo "set var to $GROUP"
-  - name: check vars
+  - displayName: check vars
     bash: |
       echo "checked var to $GROUP"
-  - name: auth
+  - displayName: auth
     bash: |
       ./scripts/auth.sh
