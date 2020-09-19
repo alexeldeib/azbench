@@ -18,11 +18,11 @@ echo "Creating resource group"
 
 az group create -g "${GROUP}" -l "${LOCATION}"
 
-echo "Creating identity"
-az identity create -g "${GROUP}" --name "${GROUP}-identity"
+# echo "Creating identity"
+# az identity create -g "${GROUP}" --name "${GROUP}-identity"
 
-SUBSCRIPTION="$(az account show | jq -r .id)"
-IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
+# SUBSCRIPTION="$(az account show | jq -r .id)"
+# IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
 
 echo "Creating AKS cluster"
 
@@ -31,6 +31,7 @@ az aks create -g "${GROUP}" \
     -l "${LOCATION}" \
     -c 3 \
     -k 1.17.7 \
+    --enable-managed-identity \
     --enable-node-public-ip \
     --load-balancer-sku standard \
     --network-plugin azure \
@@ -38,8 +39,8 @@ az aks create -g "${GROUP}" \
     --node-osdisk-type=Ephemeral \
     --node-vm-size Standard_D4s_v3 \
     --node-osdisk-size 100 \
-    --assign-identity "${IDENTITY}" \
     --generate-ssh-keys > cluster.json
+    # --assign-identity "${IDENTITY}" \
 
 echo "Creating user nodepool"
 

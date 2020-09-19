@@ -24,6 +24,8 @@ echo "Managed identity: ${IDENTITY}"
 
 echo "logging into azure"
 
-az login --identity --allow-no-subscriptions -u "${IDENTITY}"
+# az login --identity --allow-no-subscriptions -u "${IDENTITY}"
+
+az login --service-principal --username "${CLIENT_APP}" --password "${CLIENT_PASSWORD}" --tenant "${TENANT_ID}"
 
 echo "successfully logged in!"
