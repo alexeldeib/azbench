@@ -7,9 +7,8 @@ metadata:
     app: pgbench
 data:
   PGHOST: "postgresql.default.svc.cluster.local"
-  JOB_NAME: "bench1"
-  JOBS: "2"
-  CLIENTS: "4"
-  DURATION: "120"
-  SCALE_FACTOR: "120"
+  JOBS: "${JOBS}"
+  CLIENTS: "${CLIENTS}"
+  DURATION: "${DURATION}"
+  SCALE_FACTOR: "${SCALE_FACTOR}"
 ---

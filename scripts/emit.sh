@@ -66,11 +66,6 @@ LATENCY_AVG="$(cat logs.out | sed '7q;d' - | cut -d ' ' -f4)"
 TPS_WITH_CONN="$(cat logs.out | sed '8q;d' - | cut -d ' ' -f3)"
 TPS_WITHOUT_CONN="$(cat logs.out | sed '9q;d' - | cut -d ' ' -f3)"
 
-export CACHING="None"
-export NODE_VM_SIZE="Standard_D4s_v3"
-export NODE_OSDISK_TYPE="Managed"
-export NODE_OSDISK_SIZE="2048"
-
 DIMENSIONS="\"Dims\": {
         \"scale\": \"${SCALE}\",
         \"threads\": \"${THREADS}\",
