@@ -32,7 +32,8 @@ az aks create -g "${GROUP}" \
     --vm-set-type VirtualMachineScaleSets \
     --node-osdisk-type=Ephemeral \
     --node-vm-size Standard_D4s_v3 \
-    --node-osdisk-size 100 > cluster.json
+    --node-osdisk-size 100 \
+    --generate-ssh-keys > cluster.json
 
 echo "Creating user nodepool"
 
