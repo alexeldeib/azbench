@@ -64,44 +64,52 @@ LATENCY_AVG="$(cat logs.out | sed '7q;d' - | cut -d ' ' -f4)"
 TPS_WITH_CONN="$(cat logs.out | sed '8q;d' - | cut -d ' ' -f3)"
 TPS_WITHOUT_CONN="$(cat logs.out | sed '9q;d' - | cut -d ' ' -f3)"
 
-# | socat -t 1 - UDP-SENDTO:127.0.0.1:8125
-
 export CACHING="None"
 export NODE_VM_SIZE="Standard_D4s_v3"
 export NODE_OSDISK_TYPE="Managed"
 export NODE_OSDISK_SIZE="2048"
 
-DIMENSIONS='"Dims": {
-        "scale": "${SCALE}",
-        "threads": "${THREADS}",
-        "clients": "${CLIENTS}",
-        "duration": "${DURATION}",
-        "vmsize": "${NODE_VM_SIZE}",
-        "osdisktype": "${NODE_OSDISK_TYPE}",
-        "osdisksize": "${NODE_OSDISK_SIZE}",
-        "workloaddisk": "os",
-    }'
+DIMENSIONS="\"Dims\": {
+        \"scale\": \"${SCALE}\",
+        \"threads\": \"${THREADS}\",
+        \"clients\": \"${CLIENTS}\",
+        \"duration\": \"${DURATION}\",
+        \"vmsize\": \"${NODE_VM_SIZE}\",
+        \"osdisktype\": \"${NODE_OSDISK_TYPE}\",
+        \"osdisksize\": \"${NODE_OSDISK_SIZE}\",
+        \"workloaddisk\": \"os\"
+    }"
 
 echo "Emitting pgbench_latency"
 
-echo -e '{
-    "Namespace":"BlackboxMonitoring",
-    "Metric":"pgbench_latency",
+PAYLOAD="{
+    \"Account\": \"aks-data-plane\",
+    \"Namespace\":\"BlackboxMonitoring\",
+    \"Metric\":\"pgbench_latency\",
     ${DIMENSIONS}
-}:${LATENCY_AVG}|f' | socat -t 1 - UDP-SENDTO:127.0.0.1:8125 
+}:${LATENCY_AVG}|f"
+
+echo "${PAYLOAD}" | tr -d ' \n' | socat -t 1 - UDP-SENDTO:127.0.0.1:8125
 
 echo "Emitting pgbench_tps_with_conn"
 
-echo -e '{
-    "Namespace":"BlackboxMonitoring",
-    "Metric":"pgbench_tps_with_conn",
+PAYLOAD="{
+    \"Account\": \"aks-data-plane\",
+    \"Namespace\":\"BlackboxMonitoring\",
+    \"Metric\":\"pgbench_tps_with_conn\",
     ${DIMENSIONS}
-}:${TPS_WITH_CONN}|f' | socat -t 1 - UDP-SENDTO:127.0.0.1:8125 
+}:${TPS_WITH_CONN}|f"
 
-echo "Emitting pgbench_tps_with_conn"
+echo "${PAYLOAD}" | tr -d ' \n' | socat -t 1 - UDP-SENDTO:127.0.0.1:8125
 
-echo -e '{
-    "Namespace":"BlackboxMonitoring",
-    "Metric":"pgbench_tps_with_conn",
+echo "Emitting pgbench_tps_without_conn"
+
+PAYLOAD="{
+    \"Account\": \"aks-data-plane\",
+    \"Namespace\":\"BlackboxMonitoring\",
+    \"Metric\":\"pgbench_tps_without_conn\",
     ${DIMENSIONS}
-}:${TPS_WITHOUT_CONN}|f' | socat -t 1 - UDP-SENDTO:127.0.0.1:8125 
+}:${TPS_WITHOUT_CONN}|f"
+
+echo "${PAYLOAD}" | tr -d ' \n' | socat -t 1 - UDP-SENDTO:127.0.0.1:8125
+

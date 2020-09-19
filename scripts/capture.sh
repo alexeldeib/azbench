@@ -6,22 +6,26 @@ set -o errexit
 BASH_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
 cd "$BASH_ROOT"
 
-az keyvault secret download --vault-name aks-dataplane-test -n geneva-agent -e base64 -f cert.pfx
-openssl pkcs12 -nocerts -nodes -passin pass: -in cert.pfx -out gcskeytmp.pem && openssl rsa -in gcskeytmp.pem -out gcskey.pem
-openssl pkcs12 -nokeys -nodes -passin pass: -in cert.pfx -out gcscerttmp.pem && openssl x509 -in gcscerttmp.pem -out gcscert.pem
-rm gcskeytmp.pem gcscerttmp.pem cert.pfx
+set -x
+
+az keyvault secret download --vault-name aks-dataplane-test -n gcs -f cert.pfx
+openssl rsa -in cert.pfx -out gcskey.pem
+openssl x509 -in cert.pfx -out gcscert.pem
+rm cert.pfx
 
 echo "Starting metrics container"
 
 docker run \
     -d \
-    -v $(PWD)/gcscert.pem:/etc/certs/gcscert.pem \
-    -v $(PWD)/gcskey.pem:/etc/certs/gcskey.pem \
+    -v $(pwd)/gcscert.pem:/etc/certs/gcscert.pem \
+    -v $(pwd)/gcskey.pem:/etc/certs/gcskey.pem \
     --rm \
+    -p 8125:8125/udp \
     --name geneva \
     alexeldeib/metrics:latest \
+    -StatsdPort 8125 \
     -Logger Console \
-    -FrontEndUrl https://az-compute.metrics.nsatc.net \
+    -FrontEndUrl https://global.int.microsoftmetrics.com \
     -CertFile /etc/certs/gcscert.pem \
     -PrivateKeyFile /etc/certs/gcskey.pem \
     -Input statsd_udp
