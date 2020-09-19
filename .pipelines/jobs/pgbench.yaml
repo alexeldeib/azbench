@@ -31,6 +31,10 @@ jobs:
       echo "Generated resource group name: '$GROUP'"
   - bash: ./scripts/auth.sh
     displayName: "login to azure"
+    env:
+      CLIENT_APP: $(CLIENT_APP)
+      CLIENT_PASS: $(CLIENT_PASS)
+      TENANT_ID: $(TENANT_ID)
   - bash: ./scripts/cli.sh
     displayName: "install azure cli preview"
   - bash: ./scripts/capture.sh
