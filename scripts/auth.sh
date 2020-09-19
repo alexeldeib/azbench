@@ -16,7 +16,7 @@ echo $METADATA | jq .
 
 SUBSCRIPTION="$(echo $METADATA | jq -r .compute.subscriptionId)"
 GROUP="$(echo $METADATA | jq -r .compute.resourceGroupName)"
-IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
+IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
 
 echo "Subscription ID: ${SUBSCRIPTION}"
 echo "resourceGroupName: ${GROUP}"
