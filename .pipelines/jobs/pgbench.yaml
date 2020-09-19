@@ -12,28 +12,23 @@ parameters:
 jobs:
 - job: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
   displayName: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
+  variables:
+    CACHING: "${{ parameters.cache }}"
+    NODE_VM_SIZE: "${{ parameters.vmsize }}"
+    NODE_OSDISK_TYPE: "${{ parameters.osdisktype }}"
+    NODE_OSDISK_SIZE: "${{ parameters.osdisksize }}"
+    JOBS: "${{ parameters.jobs }}"
+    CLIENTS: "${{ parameters.clients }}"
+    DURATION: "${{ parameters.duration }}"
+    SCALE_FACTOR: "${{ parameters.scalefactor }}"
+    DATA_DIR: "${{ parameters.datadir }}"
   steps:
   - bash: |
       set -ux
       echo "Setting variables"
       export GROUP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
       echo "##vso[task.setvariable variable=GROUP]${GROUP}"
-      
-      set -e
       echo "Generated resource group name: '$GROUP'"
-
-      export CACHING="${{ parameters.cache }}"
-      export NODE_VM_SIZE="${{ parameters.vmsize }}"
-      export NODE_OSDISK_TYPE="${{ parameters.osdisktype }}"
-      export NODE_OSDISK_SIZE="${{ parameters.osdisksize }}"
-
-      # pgbench
-      export JOBS="${{ parameters.jobs }}"
-      export CLIENTS="${{ parameters.clients }}"
-      export DURATION="${{ parameters.duration }}"
-      export SCALE_FACTOR="${{ parameters.scalefactor }}"
-      export DATA_DIR="${{ parameters.datadir }}"
-    displayName: initialize variables
   - bash: ./scripts/auth.sh
     displayName: "login to azure"
   - bash: ./scripts/cli.sh
