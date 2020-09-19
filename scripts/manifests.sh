@@ -48,7 +48,7 @@ OLD_SECRET="$(kubectl get secret pg-config --ignore-not-found -o yaml)"
 if [[ -z "$OLD_SECRET" ]]; then
     echo "Creating secret"
     set +x
-    kubectl create secret generic pg-config -o yaml --dry-run=client \
+    kubectl create secret generic pg-config -o yaml --dry-run \
         --from-literal=PGDATABASE="${PGDATABASE}" \
         --from-literal=PGUSER="${PGUSER}" \
         --from-literal=PGPASSWORD="${PGPASSWORD}" \
