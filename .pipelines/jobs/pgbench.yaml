@@ -10,8 +10,8 @@ parameters:
   datadir: '/var/lib/postgresql/12/main'
 
 jobs:
-- job: ${{ format('{0}, caching:{1}, scalefactor:{2}, {3}GB {4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
-  displayName: ${{ format('{0}, caching:{1}, scalefactor:{2}, {3}GB {4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
+- job: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
+  displayName: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
   steps:
   - bash: |
       export CACHING="${{ parameters.cache }}"
