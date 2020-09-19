@@ -15,6 +15,8 @@ git clone https://github.com/Azure/azure-cli
 pushd azure-cli-extensions
 
 python3 -m virtualenv --python=/usr/bin/python3 venv
+
+set +o nounset
 source venv/bin/activate
 
 pip install azdev
