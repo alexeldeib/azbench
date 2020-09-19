@@ -12,11 +12,10 @@ pool:
 
 jobs:
 - template: jobs/matrix.yaml
-
-variables:
-  CLIENT_APP: $(CLIENT_APP)
-  CLIENT_PASSWORD: $(CLIENT_PASSWORD)
-  TENANT_ID: $(TENANT_ID)
+  variables:
+    CLIENT_APP: $(CLIENT_APP)
+    CLIENT_PASSWORD: $(CLIENT_PASSWORD)
+    TENANT_ID: $(TENANT_ID)
 
 # - job: azbench
 #   timeoutInMinutes: 360 # 6 hours
