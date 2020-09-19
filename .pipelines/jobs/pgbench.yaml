@@ -37,12 +37,13 @@ jobs:
       export PATH=$PATH:${HOME}/bin
       go env
       mkdir -p ${HOME}/bin
+      rm -rf ${HOME}/kustomize
       mkdir -p ${HOME}/kustomize
       cd ${HOME}/kustomize
-      rm go.{mod,sum} || true
-      go clean -modcache
-      go mod init tmp
-      go get sigs.k8s.io/kustomize/kustomize/v3@v3.8.3
+      git clone https://github.com/kubernetes-sigs/kustomize .
+      git checkout kustomize/v3.8.3
+      cd kustomize
+      go install .
       cp $(go env GOPATH)/bin/kustomize ${HOME}/bin/kustomize
       cd ${HOME}
       rm -rf ${HOME}/kustomize
