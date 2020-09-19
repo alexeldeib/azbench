@@ -24,6 +24,6 @@ echo "Managed identity: ${IDENTITY}"
 
 echo "logging into azure"
 
-az login --identity -u "${IDENTITY}"
+az login --identity --allow-no-subscriptions -u "${IDENTITY}"
 
 echo "successfully logged in!"
