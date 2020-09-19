@@ -1,0 +1,33 @@
+parameters:
+  caching: ''
+  vmsize: ''
+  osdisktype: ''
+  osdisksize: ''
+  jobs: '2'
+  clients: '4'
+  duration: ''
+  scalefactor: ''
+  datadir: '/var/lib/postgresql/12/main'
+
+jobs:
+- job: pgbench
+  steps:
+  - bash: |
+      export CACHING="${{ parameters.cache }}"
+      export NODE_VM_SIZE="${{ parameters.vmsize }}"
+      export NODE_OSDISK_TYPE="${{ parameters.osdisktype }}"
+      export NODE_OSDISK_SIZE="${{ parameters.osdisksize }}"
+
+      # pgbench
+      export JOBS="${{ parameters.jobs }}"
+      export CLIENTS="${{ parameters.clients }}"
+      export DURATION="${{ parameters.duration }}"
+      export SCALE_FACTOR="${{ parameters.scalefactor }}"
+      export DATA_DIR="${{ parameters.datadir }}"
+  - bash: ./scripts/auth.sh
+  - bash: ./scripts/capture.sh
+  - bash: ./scripts/cluster.sh
+  - bash: ./scripts/manifests.sh
+  - bash: ./scripts/emit.sh
+  - bash: ./scripts/delete.sh
+    condition: always()

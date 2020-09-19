@@ -1,0 +1,73 @@
+parameters:
+  cache_types: ['ReadWrite', 'ReadOnly', 'None']
+  jobs: '2'
+  clients: '4'
+  duration: '600'
+  scalefactors: [120, 1080, 4800]
+  datadir: '/var/lib/postgresql/12/main'
+  
+jobs:
+- ${{ each caching in parameters.cache_types }}:
+  - ${{ each scalefactor in parameters.scalefactors }}:
+    - template: .pipelines/jobs/pgbench.yaml
+      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 500GB managed', caching, scalefactor) }}
+      parameters:
+        vmsize: 'Standard_D4s_v3'
+        osdisktype: 'Managed'
+        osdisksize: '500' 
+        caching: ${{ caching }}
+        scalefactor: ${{ scalefactor }} 
+        jobs: '${{ parameters.jobs }}'
+        client: '${{ parameters.clients }}'
+    - template: .pipelines/jobs/pgbench.yaml
+      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 2048GB managed', caching, scalefactor) }}
+      parameters:
+        vmsize: 'Standard_D4s_v3'
+        osdisktype: 'Managed'
+        osdisksize: '2048' 
+        caching: ${{ caching }}
+        scalefactor: ${{ scalefactor }} 
+        jobs: '${{ parameters.jobs }}'
+        client: '${{ parameters.clients }}'
+    - template: .pipelines/jobs/pgbench.yaml
+      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 100GB ephemeral', caching, scalefactor) }}
+      parameters:
+        vmsize: 'Standard_D4s_v3'
+        osdisktype: 'Ephemeral'
+        osdisksize: '100' 
+        caching: ${{ caching }}
+        scalefactor: ${{ scalefactor }} 
+        jobs: '${{ parameters.jobs }}'
+        client: '${{ parameters.clients }}'
+        duration: '${{ parameters.duration }}'
+    - template: .pipelines/jobs/pgbench.yaml
+      displayName: ${{ format('Standard_D4s_v3, caching:{0}, scalefactor:{1}, 500GB managed', caching, scalefactor) }}
+      parameters:
+        vmsize: 'Standard_D16s_v3'
+        osdisktype: 'Managed'
+        osdisksize: '500' 
+        caching: ${{ caching }}
+        scalefactor: ${{ scalefactor }} 
+        jobs: '${{ parameters.jobs }}'
+        client: '${{ parameters.clients }}'
+    - template: .pipelines/jobs/pgbench.yaml
+      displayName: ${{ format('Standard_D16s_v3, caching:{0}, scalefactor:{1}, 2048GB managed', caching, scalefactor) }}
+      parameters:
+        vmsize: 'Standard_D16s_v3'
+        osdisktype: 'Managed'
+        osdisksize: '2048' 
+        caching: ${{ caching }}
+        scalefactor: ${{ scalefactor }} 
+        jobs: '${{ parameters.jobs }}'
+        client: '${{ parameters.clients }}'
+    - template: .pipelines/jobs/pgbench.yaml
+      displayName: ${{ format('Standard_D16s_v3, caching:{0}, scalefactor:{1}, 100GB ephemeral', caching, scalefactor) }}
+      parameters:
+        vmsize: 'Standard_D16s_v3'
+        osdisktype: 'Ephemeral'
+        osdisksize: '100' 
+        caching: ${{ caching }}
+        scalefactor: ${{ scalefactor }} 
+        jobs: '${{ parameters.jobs }}'
+        client: '${{ parameters.clients }}'
+        duration: '${{ parameters.duration }}'

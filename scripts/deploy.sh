@@ -17,9 +17,8 @@ set -o errexit
 echo "Defining cleanup function"
 
 function cleanup() {
-    rm pg-config.yaml || true
+    rm pg-config.yaml > /dev/null || true
 }
-
 
 # Retries a command on failure.
 # $1 - the max number of attempts
@@ -43,11 +42,9 @@ function retry() {
 }
 
 echo "Setting cleanup trap"
-
 trap cleanup EXIT
 
 echo "Checking for secret"
-
 OLD_SECRET="$(kubectl get secret pg-config --ignore-not-found -o yaml)"
 
 if [[ -z "$OLD_SECRET" ]]; then
@@ -56,7 +53,8 @@ if [[ -z "$OLD_SECRET" ]]; then
         --from-literal=PGDATABASE="${PGDATABASE}" \
         --from-literal=PGUSER="${PGUSER}" \
         --from-literal=PGPASSWORD="${PGPASSWORD}" \
-        --from-literal=PGPASS="${PGHOST}:5432:${PGDATABASE}:${PGUSER}:${PGPASSWORD}" > pg-config.yaml
+        --from-literal=PGPASS="${PGHOST}:5432:${PGDATABASE}:${PGUSER}:${PGPASSWORD}" \
+        --from-literal=PGPASSFILE="/tmp/postgres/.pgpass" > pg-config.yaml
 
     kubectl apply -f pg-config.yaml
     rm pg-config.yaml || true
@@ -72,15 +70,12 @@ fi
 # echo -e "$SECRET_CONTENT" > manifests/pgbench/pg-config
 
 echo "Applying postgresql manifests"
-
 kustomize build manifests/postgresql | kubectl apply -f -
 
 echo "Applying pgbench manifests"
-
 kustomize build manifests/pgbench | kubectl apply -f -
 
 echo "Waiting for pgbench completion"
-
 retry 10 kubectl logs -f $(kubectl get pod -l app=pgbench -o jsonpath="{.items[0].metadata.name}") &
 
 read -n 1 -s -r

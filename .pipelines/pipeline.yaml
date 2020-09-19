@@ -11,21 +11,18 @@ pool:
   name: ace-test
 
 jobs:
-- job: azbench
-  timeoutInMinutes: 360 # 6 hours
-  workspace:
-    clean: all
-  steps:
-  - bash: |
-      echo "setting var name"
-      export GROUP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
-      echo "##vso[task.setvariable variable=GROUP]${GROUP}"
-      echo "set var to $GROUP"
-    displayName: test vars
-  - bash: |
-      echo "checked var to $GROUP"
-    displayName: check vars
-  - bash: |
-      ./scripts/auth.sh
-    displayName: auth
+- template: .pipelines/jobs/matrix.yaml
+
+# - job: azbench
+#   timeoutInMinutes: 360 # 6 hours
+#   workspace:
+#     clean: all
+#   steps:
+#   - bash: |
+#       echo "setting var name"
+#       export GROUP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
+#       echo "##vso[task.setvariable variable=GROUP]${GROUP}"
+#       echo "set var to $GROUP"
+#     displayName: test 
+#   - template:
     

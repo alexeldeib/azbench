@@ -3,7 +3,8 @@ set -o pipefail
 set -o nounset
 set -x
 
-export GROUP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
+NEWGRP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
+export GROUP="${GROUP:=$NEWGRP}"
 export LOCATION="southcentralus"
 export CACHING="${CACHING:-}"
 
@@ -41,7 +42,6 @@ az aks nodepool add -g "${GROUP}" \
     --node-vm-size "${NODE_VM_SIZE}" \
     --node-osdisk-type="${NODE_OSDISK_TYPE}" \
     --node-osdisk-size "${NODE_OSDISK_SIZE}" > nodepool.json
-
 
 echo "Fetching kubeconfig"
 

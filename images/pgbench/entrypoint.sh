@@ -3,7 +3,6 @@ set -o errexit
 set -o pipefail	
 set -x
 
-JOB_NAME=${JOB_NAME}
 SCALE_FACTOR=${SCALE_FACTOR:=100}	
 DURATION=${DURATION:=60}	
 JOBS=${JOBS:=1}	
@@ -32,8 +31,8 @@ retry() {
 
 retry 10 pg_isready -h $PGHOST -d $PGDATABASE -U $PGUSER	
 
-pgbench -i --no-vacuum -s "${SCALE_FACTOR}" "${PGDATABASE}" "${JOB_NAME}"
-pgbench -d "${PGDATABASE}" -h "$PGHOST" -U $PGUSER --no-vacuum --protocol=prepared --client=${CLIENTS} --jobs=${JOBS} --time=${DURATION} -s ${SCALE_FACTOR} ${JOB_NAME}	
+pgbench -i --no-vacuum -s "${SCALE_FACTOR}" "${PGDATABASE}"
+pgbench -d "${PGDATABASE}" -h "$PGHOST" -U $PGUSER --no-vacuum --protocol=prepared --client=${CLIENTS} --jobs=${JOBS} --time=${DURATION} -s ${SCALE_FACTOR} ${PGDATABASE}	
 
 echo "TESTING COMPLETE"
 
