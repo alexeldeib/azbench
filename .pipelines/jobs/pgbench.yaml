@@ -11,6 +11,7 @@ parameters:
 
 jobs:
 - job: pgbench
+  displayName: ${{ format('{0}, caching:{1}, scalefactor:{2}, {3}GB {4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
   steps:
   - bash: |
       export CACHING="${{ parameters.cache }}"
