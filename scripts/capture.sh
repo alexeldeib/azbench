@@ -21,7 +21,7 @@ docker run \
     -v $(pwd)/gcskey.pem:/etc/certs/gcskey.pem \
     --rm \
     -p 8125:8125/udp \
-    --name "${GROUP}" \
+    --name ${GROUP} \
     alexeldeib/metrics:latest \
     -StatsdPort 8125 \
     -Logger Console \
