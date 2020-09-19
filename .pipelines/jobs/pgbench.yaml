@@ -69,6 +69,7 @@ jobs:
     displayName: "apply manifests and run tests"
   - bash: ./scripts/emit.sh
     displayName: "emit metrics"
+    timeoutInMinutes: 600
   - bash: ./scripts/delete.sh
     displayName: "cleanup resource group"
     condition: always()
