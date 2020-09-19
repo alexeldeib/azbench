@@ -33,7 +33,7 @@ jobs:
     displayName: "login to azure"
     env:
       CLIENT_APP: $(CLIENT_APP)
-      CLIENT_PASS: $(CLIENT_PASS)
+      CLIENT_PASSWORD: $(CLIENT_PASSWORD)
       TENANT_ID: $(TENANT_ID)
   - bash: ./scripts/cli.sh
     displayName: "install azure cli preview"
