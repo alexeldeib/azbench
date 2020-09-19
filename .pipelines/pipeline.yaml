@@ -10,12 +10,13 @@ pr:
 pool:
   name: ace-test
 
+variables:
+  CLIENT_APP: $(CLIENT_APP)
+  CLIENT_PASSWORD: $(CLIENT_PASSWORD)
+  TENANT_ID: $(TENANT_ID)
+
 jobs:
 - template: jobs/matrix.yaml
-  variables:
-    CLIENT_APP: $(CLIENT_APP)
-    CLIENT_PASSWORD: $(CLIENT_PASSWORD)
-    TENANT_ID: $(TENANT_ID)
 
 # - job: azbench
 #   timeoutInMinutes: 360 # 6 hours
