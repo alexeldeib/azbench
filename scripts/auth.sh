@@ -14,7 +14,16 @@ echo "data found: $METADATA"
 
 echo $METADATA | jq .
 
-echo "Subscription ID: $(echo $METADATA | jq .compute.subscriptionId)"
-echo "resourceGroupName: $(echo $METADATA | jq .compute.resourceGroupName)"
+SUBSCRIPTION="$(echo $METADATA | jq .compute.subscriptionId)"
+GROUP="$(echo $METADATA | jq -r .compute.resourceGroupName)"
+IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
 
-echo "Managed identity: /subscriptions/$(echo $METADATA | jq -r .compute.subscriptionId)/resourceGroups/$(echo $METADATA | jq -r .compute.resourceGroupName)/Microsoft.ManagedIdentity/userAssignedIdentities/$(echo $METADATA | jq -r .compute.resourceGroupName)-identity"
+echo "Subscription ID: ${SUSCRIPTION}"
+echo "resourceGroupName: ${GROUP}"
+echo "Managed identity: ${IDENTITY}"
+
+echo "logging into azure"
+
+az login --identity -u "${IDENTITY}"
+
+echo "successfully logged in!"
