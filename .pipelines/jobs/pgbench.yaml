@@ -12,6 +12,8 @@ parameters:
 jobs:
 - job: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
   displayName: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
+  workspace:
+    clean: all
   variables:
     CACHING: "${{ parameters.cache }}"
     NODE_VM_SIZE: "${{ parameters.vmsize }}"
