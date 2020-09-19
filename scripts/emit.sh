@@ -67,6 +67,7 @@ TPS_WITH_CONN="$(cat logs.out | sed '8q;d' - | cut -d ' ' -f3)"
 TPS_WITHOUT_CONN="$(cat logs.out | sed '9q;d' - | cut -d ' ' -f3)"
 
 DIMENSIONS="\"Dims\": {
+        \"caching\": \"${CACHING}\",
         \"scale\": \"${SCALE}\",
         \"threads\": \"${THREADS}\",
         \"clients\": \"${CLIENTS}\",
