@@ -15,8 +15,6 @@ rm cert.pfx
 
 echo "Starting metrics container"
 
-docker stop /geneva || true
-docker stop geneva || true
 docker run \
     -d \
     -v $(pwd)/gcscert.pem:/etc/certs/gcscert.pem \
