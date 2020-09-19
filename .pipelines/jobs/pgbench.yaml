@@ -40,6 +40,7 @@ jobs:
       mkdir -p ${HOME}/kustomize
       cd ${HOME}/kustomize
       rm go.{mod,sum} || true
+      go clean -modcache
       go mod init tmp
       go get sigs.k8s.io/kustomize/kustomize/v3@v3.8.3
       cp $(go env GOPATH)/bin/kustomize ${HOME}/bin/kustomize
