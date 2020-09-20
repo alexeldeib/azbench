@@ -8,7 +8,7 @@ pr:
     include: ["*"]
 
 schedules:
-- cron: "0 4 * * *"
+- cron: "0 */4 * * *"
   displayName: hourly test run
   branches:
     include:
