@@ -16,7 +16,7 @@ set -o nounset
 
 echo "Creating resource group"
 
-az group create -g "${GROUP}" -l "${LOCATION}"
+az group create -g "${GROUP}" -l "${LOCATION}" --tags "azbench=true"
 
 # echo "Creating identity"
 # az identity create -g "${GROUP}" --name "${GROUP}-identity"
