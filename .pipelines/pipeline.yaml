@@ -7,6 +7,13 @@ pr:
   branches:
     include: ["*"]
 
+schedules:
+- cron: "0 * * * *"
+  displayName: hourly test run
+  branches:
+    include:
+    - main
+
 pool:
   name: ace-test
 
