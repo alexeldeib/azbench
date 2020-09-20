@@ -9,15 +9,15 @@ parameters:
 jobs:
 - ${{ each caching in parameters.scalefactors }}:
   - template: pgbench.yaml
-      parameters:
-        vmsize: 'Standard_D4s_v3'
-        osdisktype: 'Ephemeral'
-        osdisksize: '100' 
-        caching: ReadOnly
-        scalefactor: ${{ scalefactor }} 
-        jobs: '${{ parameters.jobs }}'
-        client: '${{ parameters.clients }}'
-        duration: '${{ parameters.duration }}'
+    parameters:
+      vmsize: 'Standard_D4s_v3'
+      osdisktype: 'Ephemeral'
+      osdisksize: '100' 
+      caching: ReadOnly
+      scalefactor: ${{ scalefactor }} 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
   - template: pgbench.yaml
     parameters:
       vmsize: 'Standard_D16s_v3'
