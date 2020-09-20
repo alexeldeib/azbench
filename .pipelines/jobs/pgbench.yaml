@@ -16,7 +16,7 @@ jobs:
   workspace:
     clean: all
   variables:
-    CACHING: "${{ parameters.cache }}"
+    CACHING: "${{ parameters.caching }}"
     NODE_VM_SIZE: "${{ parameters.vmsize }}"
     NODE_OSDISK_TYPE: "${{ parameters.osdisktype }}"
     NODE_OSDISK_SIZE: "${{ parameters.osdisksize }}"
