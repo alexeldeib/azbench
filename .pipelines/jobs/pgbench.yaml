@@ -26,6 +26,7 @@ jobs:
     DURATION: "${{ parameters.duration }}"
     SCALE_FACTOR: "${{ parameters.scalefactor }}"
     DATA_DIR: "${{ parameters.datadir }}"
+    ACTION: "${{ parameters.action }}"
   steps:
   - bash: |
       set -ux
