@@ -11,8 +11,8 @@ parameters:
   action: ''
 
 jobs:
-- job: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
-  displayName: ${{ format('{0}_{1}_Scalefactor_{2}_{3}GB_{4}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype) }}
+- job: ${{ format('{0}_{1}_scale-{2}_{3}GB_{4}-{5}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype, parameters.action) }}
+  displayName: ${{ format('{0}_{1}_scale-{2}_{3}GB_{4}-{5}', parameters.vmsize, parameters.caching, parameters.scalefactor, parameters.osdisksize, parameters.osdisktype, parameters.action) }}
   timeoutInMinutes: 600
   workspace:
     clean: all
