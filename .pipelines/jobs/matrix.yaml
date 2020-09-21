@@ -54,7 +54,7 @@ jobs:
           jobs: '${{ parameters.jobs }}'
           client: '${{ parameters.clients }}'
           duration: '${{ parameters.duration }}'
-        action: '${{ action }}'
+          action: '${{ action }}'
       - template: pgbench.yaml
         parameters:
           vmsize: 'Standard_D16s_v3'
