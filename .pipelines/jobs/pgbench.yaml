@@ -68,7 +68,7 @@ jobs:
       CLIENT_PASSWORD: $(password)
       TENANT_ID: $(tenant)
   - bash: ./scripts/tuning.sh
-    displayName: "tuning cluster"
+    displayName: "tune worker nodes"
   - bash: ./scripts/manifests.sh
     displayName: "apply manifests and run tests"
   - bash: ./scripts/emit.sh
