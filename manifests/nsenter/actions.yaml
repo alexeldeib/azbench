@@ -49,7 +49,7 @@ data:
     touch /opt/cleared
 
     reboot now
-  scheduler-mq-deadline: |
+  scheduler_mq_deadline: |
     #!/usr/bin/env bash
     set -ux
 

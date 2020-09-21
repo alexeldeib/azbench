@@ -5,7 +5,7 @@ parameters:
   duration: '600'
   scalefactors: [4800]
   datadir: '/var/lib/postgresql/12/main'
-  actions: ['donothing', 'scheduler-mq-deadline']
+  actions: ['donothing', 'scheduler_mq_deadline']
 
 jobs:
 - ${{ each scalefactor in parameters.scalefactors }}:
