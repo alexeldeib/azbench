@@ -107,7 +107,7 @@ function get_node_status() {
 
 echo "Checking if we should apply tuning"
 
-if [[ -n "${ACTION}"]]; then
+if [[ -n "${ACTION}" ]]; then
     echo "Applying tuning manifests"
     kustomize build manifests/nsenter | envsubst | kubectl apply -f - 
 
@@ -128,7 +128,8 @@ if [[ -n "${ACTION}"]]; then
     done
 
     echo "Waiting for all pods to be ready after restart"
-    while [[ "${ALL_READY}" -ne "true" ]]; do
+    ALL_POD_READY=""
+    while [[ "${ALL_POD_READY}" -ne "true" ]]; do
         READY="$(get_pod_phase)"
         READY_COUNT=0
         for IS_READY in "${READY}"; do
@@ -138,12 +139,14 @@ if [[ -n "${ACTION}"]]; then
         done
         if [[ "${READY_COUNT}" == "${POD_COUNT}" ]]; then
             echo "All pods ready after one restart"
-        then
+            ALL_POD_READY="true"
+        fi
     done
 
-    NODE_COUNT="$(kubectl get node -o jsonpath="{.items[*].metadata.name}" | wc -w)"
     echo "Waiting for all nodes to be ready after restart"
-    while [[ "${ALL_READY}" -ne "true" ]]; do
+    NODE_COUNT="$(kubectl get node -o jsonpath="{.items[*].metadata.name}" | wc -w)"
+    ALL_NODE_READY=""
+    while [[ "${ALL_NODE_READY}" -ne "true" ]]; do
         READY="$(get_node_status)"
         READY_COUNT=0
         for IS_READY in "${READY}"; do
@@ -153,9 +156,9 @@ if [[ -n "${ACTION}"]]; then
         done
         if [[ "${READY_COUNT}" == "${NODE_COUNT}" ]]; then
             echo "All nodes ready after one restart"
-        then
+            ALL_NODE_READY="true"
+        fi
     done
-
     echo "Successfully completed all tuning and validation"
 else
     echo "No tuning required."
