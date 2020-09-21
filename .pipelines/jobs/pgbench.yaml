@@ -68,6 +68,8 @@ jobs:
       CLIENT_APP: $(app)
       CLIENT_PASSWORD: $(password)
       TENANT_ID: $(tenant)
+  - bash: ./scripts/tuning.sh
+    displayName: "tuning cluster"
   - bash: ./scripts/manifests.sh
     displayName: "apply manifests and run tests"
   - bash: ./scripts/emit.sh
