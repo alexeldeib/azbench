@@ -3,66 +3,78 @@ parameters:
   jobs: '2'
   clients: '4'
   duration: '600'
-  scalefactors: [120, 1080, 4800]
+  scalefactors: [4800]
   datadir: '/var/lib/postgresql/12/main'
+  actions: ['donothing', 'scheduler-mq-deadline']
 
 jobs:
 - ${{ each scalefactor in parameters.scalefactors }}:
-  - template: pgbench.yaml
-    parameters:
-      vmsize: 'Standard_D4s_v3'
-      osdisktype: 'Ephemeral'
-      osdisksize: '100' 
-      caching: ReadOnly
-      scalefactor: ${{ scalefactor }} 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-  - template: pgbench.yaml
-    parameters:
-      vmsize: 'Standard_D16s_v3'
-      osdisktype: 'Ephemeral'
-      osdisksize: '100' 
-      caching: "ReadOnly"
-      scalefactor: ${{ scalefactor }} 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-  - ${{ each caching in parameters.cache_types }}:
+  - ${{ each action in parameters.actions }}:
     - template: pgbench.yaml
       parameters:
         vmsize: 'Standard_D4s_v3'
-        osdisktype: 'Managed'
-        osdisksize: '500' 
-        caching: ${{ caching }}
+        osdisktype: 'Ephemeral'
+        osdisksize: '100' 
+        caching: ReadOnly
         scalefactor: ${{ scalefactor }} 
         jobs: '${{ parameters.jobs }}'
         client: '${{ parameters.clients }}'
-    - template: pgbench.yaml
-      parameters:
-        vmsize: 'Standard_D4s_v3'
-        osdisktype: 'Managed'
-        osdisksize: '2048' 
-        caching: ${{ caching }}
-        scalefactor: ${{ scalefactor }} 
-        jobs: '${{ parameters.jobs }}'
-        client: '${{ parameters.clients }}'
+        duration: '${{ parameters.duration }}'
+        action: '${{ action }}'
     - template: pgbench.yaml
       parameters:
         vmsize: 'Standard_D16s_v3'
-        osdisktype: 'Managed'
-        osdisksize: '500' 
-        caching: ${{ caching }}
+        osdisktype: 'Ephemeral'
+        osdisksize: '100' 
+        caching: "ReadOnly"
         scalefactor: ${{ scalefactor }} 
         jobs: '${{ parameters.jobs }}'
         client: '${{ parameters.clients }}'
-    - template: pgbench.yaml
-      parameters:
-        vmsize: 'Standard_D16s_v3'
-        osdisktype: 'Managed'
-        osdisksize: '2048' 
-        caching: ${{ caching }}
-        scalefactor: ${{ scalefactor }} 
-        jobs: '${{ parameters.jobs }}'
-        client: '${{ parameters.clients }}'
-    
+        duration: '${{ parameters.duration }}'
+        action: '${{ action }}'
+    - ${{ each caching in parameters.cache_types }}:
+      - template: pgbench.yaml
+        parameters:
+          vmsize: 'Standard_D4s_v3'
+          osdisktype: 'Managed'
+          osdisksize: '500' 
+          caching: ${{ caching }}
+          scalefactor: ${{ scalefactor }} 
+          jobs: '${{ parameters.jobs }}'
+          client: '${{ parameters.clients }}'
+          duration: '${{ parameters.duration }}'
+          action: '${{ action }}'
+      - template: pgbench.yaml
+        parameters:
+          vmsize: 'Standard_D4s_v3'
+          osdisktype: 'Managed'
+          osdisksize: '2048' 
+          caching: ${{ caching }}
+          scalefactor: ${{ scalefactor }} 
+          jobs: '${{ parameters.jobs }}'
+          client: '${{ parameters.clients }}'
+          duration: '${{ parameters.duration }}'
+        action: '${{ action }}'
+      - template: pgbench.yaml
+        parameters:
+          vmsize: 'Standard_D16s_v3'
+          osdisktype: 'Managed'
+          osdisksize: '500' 
+          caching: ${{ caching }}
+          scalefactor: ${{ scalefactor }} 
+          jobs: '${{ parameters.jobs }}'
+          client: '${{ parameters.clients }}'
+          duration: '${{ parameters.duration }}'
+          action: '${{ action }}'
+      - template: pgbench.yaml
+        parameters:
+          vmsize: 'Standard_D16s_v3'
+          osdisktype: 'Managed'
+          osdisksize: '2048' 
+          caching: ${{ caching }}
+          scalefactor: ${{ scalefactor }} 
+          jobs: '${{ parameters.jobs }}'
+          client: '${{ parameters.clients }}'
+          duration: '${{ parameters.duration }}'
+          action: '${{ action }}'
+      

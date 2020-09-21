@@ -5,6 +5,23 @@ metadata:
   labels:
     app: nsenter
 data:
+  donothing: |
+    #!/usr/bin/env bash
+    set -x
+
+    if [[ -f /opt/sentinel ]]; then
+      if [[ ! -z "$1" ]]; then
+        echo "received positional argument, forcing cleanup"
+        rm /opt/sentinel || true
+      else
+        echo "Already ran, exiting"
+        exit 0
+      fi
+    fi
+
+    echo "Doing nothing, dropping sentinel, and rebooting once"
+    touch /opt/sentinel
+    reboot now
   clear-cache: |
     #!/usr/bin/env bash
     set -x
