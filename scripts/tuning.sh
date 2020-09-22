@@ -32,7 +32,7 @@ if [[ -n "${ACTION}" ]]; then
 
     echo "Waiting for all pods to have 1 reboot to ensure tuning applied"
     POD_COUNT="$(kubectl get pod -o jsonpath="{.items[*].metadata.name}" | wc -w)"
-    ALL_RESTARTED=""
+    ALL_RESTARTED="false"
     while [[ "${ALL_RESTARTED}" -ne "true" ]]; do
         RESTARTS="$(get_restarts)"
         if [[ "${RESTARTS}" == "${POD_COUNT}" ]]; then
@@ -44,7 +44,7 @@ if [[ -n "${ACTION}" ]]; then
     done
 
     echo "Waiting for all pods to be ready after restart"
-    ALL_POD_READY=""
+    ALL_POD_READY="false"
     while [[ "${ALL_POD_READY}" -ne "true" ]]; do
         READY="$(get_pod_phase)"
         READY_COUNT=0
@@ -61,7 +61,7 @@ if [[ -n "${ACTION}" ]]; then
 
     echo "Waiting for all nodes to be ready after restart"
     NODE_COUNT="$(kubectl get node -o jsonpath="{.items[*].metadata.name}" | wc -w)"
-    ALL_NODE_READY=""
+    ALL_NODE_READY="false"
     while [[ "${ALL_NODE_READY}" -ne "true" ]]; do
         READY="$(get_node_status)"
         READY_COUNT=0
