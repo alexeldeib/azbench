@@ -65,7 +65,7 @@ echo "Applying postgresql manifests"
 kustomize build manifests/postgresql | envsubst | kubectl apply -f -
 
 echo "Waiting for postgresql rollout"
-kubectl rollout status deploy/postgresql
+retry 3 kubectl rollout status deploy/postgresql
 
 echo "Applying pgbench manifests"
 cat manifests/pgbench/config.yaml | envsubst > tmp.yaml
@@ -73,6 +73,6 @@ mv tmp.yaml manifests/pgbench/config.yaml
 kustomize build manifests/pgbench | kubectl apply -f -
 
 echo "Waiting for pgbench rollout"
-kubectl rollout status deploy/pgbench
+retry 3 kubectl rollout status deploy/pgbench
 
 echo "Successfully applied all manifests"
