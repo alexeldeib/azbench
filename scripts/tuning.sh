@@ -25,7 +25,7 @@ echo "Checking if we should apply tuning"
 
 if [[ -n "${ACTION}" ]]; then
     echo "Applying tuning manifests"
-    kustomize build manifests/nsenter | envsubst  kubectl apply -f - 
+    kustomize build manifests/nsenter | envsubst | kubectl apply -f - 
 
     echo "Waiting for rollout"
     kubectl rollout status daemonset/nsenter
