@@ -10,11 +10,11 @@ cd "$BASH_ROOT"
 export PATH=$PATH:${HOME}/bin
 
 function get_restarts() {
-    echo "$(kubectl get pod -o jsonpath="{.items[*].status.containerStatuses[0].restartCount}")"
+    echo "$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].status.containerStatuses[0].restartCount}")"
 }
 
 function get_pod_phase() {
-    echo "$(kubectl get pod -o jsonpath="{.items[*].status.phase}")"
+    echo "$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].status.phase}")"
 }
 
 function get_node_status() {
@@ -31,9 +31,9 @@ if [[ -n "${ACTION}" ]]; then
     kubectl rollout status daemonset/nsenter
 
     echo "Waiting for all pods to have 1 reboot to ensure tuning applied"
-    POD_COUNT="$(kubectl get pod -o jsonpath="{.items[*].metadata.name}" | wc -w)"
+    POD_COUNT="$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].metadata.name}" | wc -w)"
     ALL_RESTARTED="false"
-    while [[ "${ALL_RESTARTED}" -ne "true" ]]; do
+    while [[ ! "${ALL_RESTARTED}" == "true" ]]; do
         RESTARTS="$(get_restarts)"
         if [[ "${RESTARTS}" == "${POD_COUNT}" ]]; then
             echo "All pods restarted once"
@@ -45,7 +45,7 @@ if [[ -n "${ACTION}" ]]; then
 
     echo "Waiting for all pods to be ready after restart"
     ALL_POD_READY="false"
-    while [[ "${ALL_POD_READY}" -ne "true" ]]; do
+    while [[ ! "${ALL_POD_READY}" == "true" ]]; do
         READY="$(get_pod_phase)"
         READY_COUNT=0
         for IS_READY in "${READY}"; do
@@ -62,7 +62,7 @@ if [[ -n "${ACTION}" ]]; then
     echo "Waiting for all nodes to be ready after restart"
     NODE_COUNT="$(kubectl get node -o jsonpath="{.items[*].metadata.name}" | wc -w)"
     ALL_NODE_READY="false"
-    while [[ "${ALL_NODE_READY}" -ne "true" ]]; do
+    while [[ ! "${ALL_NODE_READY}" == "true" ]]; do
         READY="$(get_node_status)"
         READY_COUNT=0
         for IS_READY in "${READY}"; do
