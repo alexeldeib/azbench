@@ -103,8 +103,8 @@ data:
       if [[ -n "$FOUND" ]]; then
         echo "Found none scheduler already, will exit if permanently set"
       fi
-      FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop")
-      if [[ -n "$FOUND" ]]; then
+      FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop" | wc -c)
+      if [[ "$FOUND" ==  "0" ]]; then
         echo "elevator permanently set, will exit early"
         exit 0
       fi
@@ -130,8 +130,8 @@ data:
     echo "Grub updated, logging new boot config"
     cat /boot/grub/grub.cfg
 
-    FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop")
-    if [[ -z "$FOUND" ]]; then
+    FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop" | wc -c)
+    if [[ "$FOUND" == "0" ]]; then
       echo "Expected to find elevator noop, but instead found: '$FOUND'"
     fi
 
