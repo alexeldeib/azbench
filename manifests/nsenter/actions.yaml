@@ -22,7 +22,7 @@ data:
     echo "Doing nothing, dropping sentinel, and rebooting once"
     touch /opt/sentinel
     reboot now
-  clear-cache: |
+  clear_cache: |
     #!/usr/bin/env bash
     set -x
 
@@ -55,13 +55,13 @@ data:
 
     echo "Checking current scheduler"
     if [[ -f /sys/block/sda/queue/scheduler ]]; then
-      FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")
-      if [[ -n "$FOUND" ]]; then
+      FOUND="$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")"
+      if [[ -n "${FOUND}" ]]; then
         echo "Found scheduler already, will exit if permanently set"
         exit 0
       fi
-      FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=mq-deadline")
-      if [[ -n "$FOUND" ]]; then
+      FOUND="$(cat /boot/grub/grub.cfg | grep "elevator=mq-deadline")"
+      if [[ -n "${FOUND}" ]]; then
         echo "elevator permanently set, will exit early"
         exit 0
       fi
@@ -73,8 +73,8 @@ data:
     echo "Set scheduler, reading back for sanity"
     cat /sys/block/sda/queue/scheduler
 
-    FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")
-    if [[ -z "$FOUND" ]]; then
+    FOUND="$(cat /sys/block/sda/queue/scheduler | grep "\[mq-deadline\]")"
+    if [[ -z "${FOUND}" ]]; then
       echo "Expected to find scheduler mq-deadline, but instead found: '$FOUND'"
     fi
 
@@ -87,24 +87,24 @@ data:
     echo "Grub updated, logging new boot config"
     cat /boot/grub/grub.cfg
 
-    FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=mq-deadline")
-    if [[ -z "$FOUND" ]]; then
-      echo "Expected to find elevator mq-deadline, but instead found: '$FOUND'"
+    FOUND="$(cat /boot/grub/grub.cfg | grep "elevator=mq-deadline")"
+    if [[ -z "${FOUND}" ]]; then
+      echo "Expected to find elevator mq-deadline, was not present"
     fi
 
     reboot now
-  scheduler-noop: |
+  scheduler_noop: |
     #!/usr/bin/env bash
     set -ux
 
     echo "Checking current scheduler"
     if [[ -f /sys/block/sda/queue/scheduler ]]; then
       FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")
-      if [[ -n "$FOUND" ]]; then
+      if [[ -n "${FOUND}" ]]; then
         echo "Found none scheduler already, will exit if permanently set"
       fi
-      FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop" | wc -c)
-      if [[ "$FOUND" ==  "0" ]]; then
+      FOUND="$(cat /boot/grub/grub.cfg | grep "elevator=noop")"
+      if [[ -n "${FOUND}" ]]; then
         echo "elevator permanently set, will exit early"
         exit 0
       fi
@@ -116,8 +116,8 @@ data:
     echo "Set scheduler, reading back for sanity"
     cat /sys/block/sda/queue/scheduler
 
-    FOUND=$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")
-    if [[ -z "$FOUND" ]]; then
+    FOUND="$(cat /sys/block/sda/queue/scheduler | grep "\[none\]")"
+    if [[ -z "${FOUND}" ]]; then
       echo "Expected to find scheduler none, but instead found: '$FOUND'"
     fi
 
@@ -130,9 +130,9 @@ data:
     echo "Grub updated, logging new boot config"
     cat /boot/grub/grub.cfg
 
-    FOUND=$(cat /boot/grub/grub.cfg | grep "elevator=noop" | wc -c)
-    if [[ "$FOUND" == "0" ]]; then
-      echo "Expected to find elevator noop, but instead found: '$FOUND'"
+    FOUND="$(cat /boot/grub/grub.cfg | grep "elevator=noop")"
+    if [[ -z "${FOUND}" ]]; then
+      echo "Expected to find elevator noop, but was not present"
     fi
 
     reboot now

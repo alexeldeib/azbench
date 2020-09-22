@@ -25,17 +25,19 @@ echo "Checking if we should apply tuning"
 
 if [[ -n "${ACTION}" ]]; then
     echo "Applying tuning manifests"
-    kustomize build manifests/nsenter | envsubst | kubectl apply -f - 
+    cat manifests/nsenter/deploy.yaml | envsubst > tmp.yaml
+    mv tmp.yaml manifests/nsenter/deploy.yaml
+    kustomize build manifests/nsenter | kubectl apply -f - 
 
     echo "Waiting for rollout"
     kubectl rollout status daemonset/nsenter
 
     echo "Waiting for all pods to have 1 reboot to ensure tuning applied"
     POD_COUNT="$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].metadata.name}" | wc -w)"
-    ALL_RESTARTED="false"
-   
     max_attempts=200
     attempt_num=1
+
+    ALL_RESTARTED="false"
     while [[ ! "${ALL_RESTARTED}" == "true" ]]; do
         if (( attempt_num == max_attempts )); then
             echo "Attempt $attempt_num failed and there are no more attempts left!"
