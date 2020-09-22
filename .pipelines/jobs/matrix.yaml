@@ -32,49 +32,49 @@ jobs:
         client: '${{ parameters.clients }}'
         duration: '${{ parameters.duration }}'
         action: '${{ action }}'
-    - ${{ each caching in parameters.cache_types }}:
-      - template: pgbench.yaml
-        parameters:
-          vmsize: 'Standard_D4s_v3'
-          osdisktype: 'Managed'
-          osdisksize: '500' 
-          caching: ${{ caching }}
-          scalefactor: ${{ scalefactor }} 
-          jobs: '${{ parameters.jobs }}'
-          client: '${{ parameters.clients }}'
-          duration: '${{ parameters.duration }}'
-          action: '${{ action }}'
-      - template: pgbench.yaml
-        parameters:
-          vmsize: 'Standard_D4s_v3'
-          osdisktype: 'Managed'
-          osdisksize: '2048' 
-          caching: ${{ caching }}
-          scalefactor: ${{ scalefactor }} 
-          jobs: '${{ parameters.jobs }}'
-          client: '${{ parameters.clients }}'
-          duration: '${{ parameters.duration }}'
-          action: '${{ action }}'
-      - template: pgbench.yaml
-        parameters:
-          vmsize: 'Standard_D16s_v3'
-          osdisktype: 'Managed'
-          osdisksize: '500' 
-          caching: ${{ caching }}
-          scalefactor: ${{ scalefactor }} 
-          jobs: '${{ parameters.jobs }}'
-          client: '${{ parameters.clients }}'
-          duration: '${{ parameters.duration }}'
-          action: '${{ action }}'
-      - template: pgbench.yaml
-        parameters:
-          vmsize: 'Standard_D16s_v3'
-          osdisktype: 'Managed'
-          osdisksize: '2048' 
-          caching: ${{ caching }}
-          scalefactor: ${{ scalefactor }} 
-          jobs: '${{ parameters.jobs }}'
-          client: '${{ parameters.clients }}'
-          duration: '${{ parameters.duration }}'
-          action: '${{ action }}'
+    # - ${{ each caching in parameters.cache_types }}:
+    #   - template: pgbench.yaml
+    #     parameters:
+    #       vmsize: 'Standard_D4s_v3'
+    #       osdisktype: 'Managed'
+    #       osdisksize: '500' 
+    #       caching: ${{ caching }}
+    #       scalefactor: ${{ scalefactor }} 
+    #       jobs: '${{ parameters.jobs }}'
+    #       client: '${{ parameters.clients }}'
+    #       duration: '${{ parameters.duration }}'
+    #       action: '${{ action }}'
+    #   - template: pgbench.yaml
+    #     parameters:
+    #       vmsize: 'Standard_D4s_v3'
+    #       osdisktype: 'Managed'
+    #       osdisksize: '2048' 
+    #       caching: ${{ caching }}
+    #       scalefactor: ${{ scalefactor }} 
+    #       jobs: '${{ parameters.jobs }}'
+    #       client: '${{ parameters.clients }}'
+    #       duration: '${{ parameters.duration }}'
+    #       action: '${{ action }}'
+    #   - template: pgbench.yaml
+    #     parameters:
+    #       vmsize: 'Standard_D16s_v3'
+    #       osdisktype: 'Managed'
+    #       osdisksize: '500' 
+    #       caching: ${{ caching }}
+    #       scalefactor: ${{ scalefactor }} 
+    #       jobs: '${{ parameters.jobs }}'
+    #       client: '${{ parameters.clients }}'
+    #       duration: '${{ parameters.duration }}'
+    #       action: '${{ action }}'
+    #   - template: pgbench.yaml
+    #     parameters:
+    #       vmsize: 'Standard_D16s_v3'
+    #       osdisktype: 'Managed'
+    #       osdisksize: '2048' 
+    #       caching: ${{ caching }}
+    #       scalefactor: ${{ scalefactor }} 
+    #       jobs: '${{ parameters.jobs }}'
+    #       client: '${{ parameters.clients }}'
+    #       duration: '${{ parameters.duration }}'
+    #       action: '${{ action }}'
       

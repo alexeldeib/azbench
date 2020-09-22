@@ -30,18 +30,24 @@ if [[ -n "${ACTION}" ]]; then
     echo "Waiting for rollout"
     kubectl rollout status daemonset/nsenter
 
-    echo "Waiting for all pods to have 1 reboot to ensure tuning applied"
-    POD_COUNT="$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].metadata.name}" | wc -w)"
-    ALL_RESTARTED="false"
-    while [[ ! "${ALL_RESTARTED}" == "true" ]]; do
-        RESTARTS="$(get_restarts)"
-        if [[ "${RESTARTS}" == "${POD_COUNT}" ]]; then
-            echo "All pods restarted once"
-            ALL_RESTARTED="true"
-        else
-            echo "Found ${RESTARTS} pods, need ${POD_COUNT} to restart"        
-        fi
-    done
+    # echo "Waiting for all pods to have 1 reboot to ensure tuning applied"
+    # POD_COUNT="$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].metadata.name}" | wc -w)"
+    # ALL_RESTARTED="false"
+    # while [[ ! "${ALL_RESTARTED}" == "true" ]]; do
+    #     RESTARTS="$(get_restarts)"
+    #     COUNT=0
+    #     for IS_RESTARTED in "${RESTARTS}"; do
+    #         if [[ "${IS_RESTARTED}" == "1" ]]; then
+    #             COUNT=$((COUNT + 1))
+    #         fi
+    #     done
+    #     if [[ "${COUNT}" == "${POD_COUNT}" ]]; then
+    #         echo "All pods ready after one restart"
+    #         ALL_RESTARTED="true"
+    #     else
+    #         echo "Found ${COUNT} pods, need ${POD_COUNT} to restart"        
+    #     fi
+    # done
 
     echo "Waiting for all pods to be ready after restart"
     ALL_POD_READY="false"
