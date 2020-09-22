@@ -33,7 +33,7 @@ if [[ -n "${ACTION}" ]]; then
     kubectl rollout status daemonset/nsenter
 
     echo "Waiting for all pods to have 1 reboot to ensure tuning applied"
-    POD_COUNT="$(kubectl get pod -l app=nsenter -o jsonpath="{.items[*].metadata.name}" | wc -w)"
+    NODE_COUNT="$(kubectl get node -o jsonpath="{.items[*].metadata.name}" | wc -w)"
     max_attempts=200
     attempt_num=1
 
@@ -50,11 +50,11 @@ if [[ -n "${ACTION}" ]]; then
                     COUNT=$((COUNT + 1))
                 fi
             done
-            if [[ "${COUNT}" == "${POD_COUNT}" ]]; then
+            if [[ "${COUNT}" == "${NODE_COUNT}" ]]; then
                 echo "All pods ready after one restart"
                 ALL_RESTARTED="true"
             else
-                echo "Found ${COUNT} pods, need ${POD_COUNT} to restart"        
+                echo "Found ${COUNT} pods, need ${NODE_COUNT} to restart"        
                 echo "Attempt $attempt_num failed! Trying again in $attempt_num seconds..."
                 sleep $(( attempt_num++ ))
             fi
@@ -76,11 +76,11 @@ if [[ -n "${ACTION}" ]]; then
                     READY_COUNT=$((READY_COUNT + 1))
                 fi
             done
-            if [[ "${READY_COUNT}" == "${POD_COUNT}" ]]; then
+            if [[ "${READY_COUNT}" == "${NODE_COUNT}" ]]; then
                 echo "All pods ready after one restart"
                 ALL_POD_READY="true"
             else
-                echo "Found ${READY_COUNT} pods, need ${POD_COUNT} to be ready"        
+                echo "Found ${READY_COUNT} pods, need ${NODE_COUNT} to be ready"        
                 echo "Attempt $attempt_num failed! Trying again in $attempt_num seconds..."
                 sleep $(( attempt_num++ ))
             fi
@@ -88,7 +88,6 @@ if [[ -n "${ACTION}" ]]; then
     done
 
     echo "Waiting for all nodes to be ready after restart"
-    NODE_COUNT="$(kubectl get node -o jsonpath="{.items[*].metadata.name}" | wc -w)"
     ALL_NODE_READY="false"
     attempt_num=1
     while [[ "${ALL_NODE_READY}" != "true" ]]; do
