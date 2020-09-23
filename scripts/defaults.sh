@@ -2,12 +2,13 @@
 set -x
 
 # cluster
-export GROUP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
+NEWGRP="$(cat /dev/urandom | tr -dc 'a-z' | fold -w 8 | head -n 1)"
+export GROUP="${GROUP:=$NEWGRP}"
 export LOCATION="southcentralus"
 export CACHING="None"
-export NODE_VM_SIZE="Standard_D4s_v3"
-export NODE_OSDISK_TYPE="Managed"
-export NODE_OSDISK_SIZE="2048"
+export NODE_VM_SIZE="Standard_D8s_v3"
+export NODE_OSDISK_TYPE="Ephemeral"
+export NODE_OSDISK_SIZE="100"
 
 # pgbench
 export JOB_NAME="bench1"
