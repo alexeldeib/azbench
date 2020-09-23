@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - config.yaml
 - pgio.yaml
+- env.yaml

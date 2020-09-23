@@ -30,26 +30,14 @@ spec:
       - image: alexeldeib/pgio:latest
         imagePullPolicy: Always
         name: *name
-        env:
-        - name: PGUSER 
-          valueFrom:
-            secretKeyRef:
-              name: pg-config
-              key: PGUSER
-        - name: PGDATABASE
-          valueFrom:
-            secretKeyRef:
-              name: pg-config
-              key: PGDATABASE
-        - name: PGPASSFILE 
-          value: "/tmp/postgres/.pgpass"
-        - name: PGHOST
-          value: "postgresql.default.svc.cluster.local"
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+        envFrom:
+        - configMapRef:
+            name: pgio-env
+        - secretRef:
+            name: pg-config
         resources: {}
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: pgpass
           readOnly: true

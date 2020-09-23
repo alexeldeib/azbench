@@ -5,6 +5,8 @@ set -o nounset
 
 echo "Hello, PGIO!"
 
+export SCALE="$(($JOBS*16))"
+
 echo "Copying setup config file to location"
 envsubst < /opt/pgio/pgio.conf > pgio.conf
 
@@ -32,7 +34,7 @@ retry() {
     done	
 }	
 
-retry 10 pg_isready -h $PGHOST -d $PGDATABASE -U $PGUSER	
+retry 10 pg_isready 
 
 echo "Running setup with current config"
 bash setup.sh
