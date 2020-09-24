@@ -34,7 +34,7 @@ az aks create -g "${GROUP}" \
     -n "${GROUP}" \
     -l "${LOCATION}" \
     -c 3 \
-    -k 1.19.0 \
+    -k 1.18.8 \
     --service-principal "${CLIENT_APP}" \
     --client-secret "${CLIENT_PASSWORD}" \
     --enable-node-public-ip \
@@ -52,7 +52,7 @@ echo "Creating user nodepool"
 az aks nodepool add -g "${GROUP}" \
     --cluster-name "${GROUP}" \
     -n agentpool1 \
-    -k 1.19.0 \
+    -k 1.18.8 \
     -c 3 \
     --enable-node-public-ip \
     --mode User \
