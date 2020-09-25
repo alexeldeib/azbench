@@ -48,6 +48,7 @@ if [[ -n "${ACTION}" ]]; then
     echo "Applying tuning manifests"
     cat manifests/nsenter/deploy.yaml | envsubst > tmp.yaml
     mv tmp.yaml manifests/nsenter/deploy.yaml
+    kustomize build manifests/nsenter
     kustomize build manifests/nsenter | kubectl apply -f - 
 
     echo "Waiting for rollout"
