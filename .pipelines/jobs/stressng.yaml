@@ -59,7 +59,7 @@ jobs:
       TENANT_ID: $(tenant)
   - bash: ./scripts/tuning.sh
     displayName: "tune worker nodes"
-  - bash: ./scripts/manifests.sh
+  - bash: ./scripts/stressng.sh
     displayName: "apply manifests and run tests"
   # - bash: ./scripts/emit.sh
   #   displayName: "emit metrics"
