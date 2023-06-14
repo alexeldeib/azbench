@@ -1,18 +1,18 @@
 name: azbench
 trigger:
   branches:
-    include: ["*"]
+    include: ["ace/stress"]
 
 pr:
   branches:
     include: ["*"]
 
-schedules:
-- cron: "0 */4 * * *"
-  displayName: hourly test run
-  branches:
-    include:
-    - main
+# schedules:
+# - cron: "0 */4 * * *"
+#   displayName: hourly test run
+#   branches:
+#     include:
+#     - main
 
 pool:
   name: $(POOL_NAME)
