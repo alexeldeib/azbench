@@ -1,0 +1,19 @@
+# This is a transient unit file, created programmatically via the systemd API. Do not edit.
+[Unit]
+Description=kubelet containerd slice
+Wants=-.slice
+
+[Slice]
+MemoryAccounting=yes
+CPUAccounting=yes
+IOAccounting=yes
+TasksAccounting=yes
+
+[Unit]
+DefaultDependencies=no
+
+[Slice]
+CPUWeight=10000
+MemoryMax=infinity
+TasksMax=infinity
+IODeviceLatencyTargetSec="/dev/sda 25ms"

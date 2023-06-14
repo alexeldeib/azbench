@@ -20,17 +20,17 @@ spec:
     metadata:
       labels:
         app: *name
-        ver: "2"
+        ver: "1"
     spec:
       # nodeSelector:
-      #   kubernetes.io/hostname: aks-nodepool1-33334912-vmss000001
+      #   kubernetes.io/hostname: aks-bigboi-33888842-vmss000001
       containers:
       - name: stress
         image: docker.io/alexeldeib/stressng:latest
         imagePullPolicy: IfNotPresent
         resources: {}
-        # securityContext:
-        #   privileged: true
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: jobfile
           readOnly: true
@@ -44,6 +44,7 @@ spec:
       # mount in tmp so we can safely use from-scratch images and/or read-only containers
       - name: tmp-dir
         emptyDir: {}
+      terminationGracePeriodSeconds: 5
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -52,7 +53,7 @@ metadata:
 data:
   jobfile: |
     # run sequential   # run stressors sequentially
-    verbose          # verbose output
+    # verbose          # verbose output
     metrics-brief    # show metrics at end of run
     timeout 600s      # stop each stressor after 60 seconds
     temp-path /tmp
@@ -62,8 +63,8 @@ data:
     # memory.
     ################################################################################
     all 0
-    class cpu,cpu-cache,io,os,scheduler
-    # maximize
+    class cpu,cpu-cache,io
+    maximize
     aggressive
     # exclude bad-altstack,bigheap,brk,dev-shm,env,madvise,malloc,mlock,mlockmany,mmap,mmapaddr,mmapfixed,mmapfork,mmaphuge,mmapmany,mremap,msync,munmap,pageswap,physpage,shm,shm-sysv,stack,stackmmap,swap,tmpfs,userfaultfd,vm,vm-addr,vm-rw,vm-segv,vm-splice,watchdog
     # cpu 1

@@ -1,0 +1,68 @@
+parameters:
+  vmsize: ''
+  osdisktype: ''
+  osdisksize: ''
+  duration: ''
+  action: ''
+
+jobs:
+- job: ${{ format('{0}_{1}GB_{2}_{3}', parameters.vmsize, parameters.osdisksize, parameters.osdisktype, parameters.action) }}
+  displayName: ${{ format('{0}_{1}GB_{2}_{3}', parameters.vmsize, parameters.osdisksize, parameters.osdisktype, parameters.action) }}
+  timeoutInMinutes: 600
+  workspace:
+    clean: all
+  variables:
+    NODE_VM_SIZE: "${{ parameters.vmsize }}"
+    NODE_OSDISK_TYPE: "${{ parameters.osdisktype }}"
+    NODE_OSDISK_SIZE: "${{ parameters.osdisksize }}"
+    DURATION: "${{ parameters.duration }}"
+    ACTION: "${{ parameters.action }}"
+  steps:
+  - bash: |
+      echo "Setting variables"
+      export GROUP="azb-$(cat /dev/urandom | tr -dc a-z | fold -w 8 | head -n 1)"
+      echo "##vso[task.setvariable variable=GROUP]${GROUP}"
+      echo "Generated resource group name: '$GROUP'"
+    displayName: generate resource group name
+  - bash: |
+      set -eux
+      export PATH=$PATH:${HOME}/bin
+      go env
+      mkdir -p ${HOME}/bin
+      rm -rf ${HOME}/kustomize
+      mkdir -p ${HOME}/kustomize
+      cd ${HOME}/kustomize
+      git clone https://github.com/kubernetes-sigs/kustomize .
+      git checkout kustomize/v3.8.3
+      cd kustomize
+      go install .
+      cp $(go env GOPATH)/bin/kustomize ${HOME}/bin/kustomize
+      cd ${HOME}
+      rm -rf ${HOME}/kustomize
+      kustomize
+    displayName: install kustomize
+  - bash: ./scripts/auth.sh
+    displayName: "login to azure"
+    env:
+      # CLIENT_APP: $(app)
+      # CLIENT_PASSWORD: $(password)
+      TENANT_ID: $(tenant)
+  - bash: ./scripts/cli.sh
+    displayName: "install azure cli preview"
+  - bash: ./scripts/capture.sh
+    displayName: "initialize metrics capture"
+  - bash: ./scripts/cluster.sh
+    displayName: "provision azure resources"
+    env:
+      CLIENT_APP: $(app)
+      CLIENT_PASSWORD: $(password)
+      TENANT_ID: $(tenant)
+  - bash: ./scripts/tuning.sh
+    displayName: "tune worker nodes"
+  - bash: ./scripts/manifests.sh
+    displayName: "apply manifests and run tests"
+  # - bash: ./scripts/emit.sh
+  #   displayName: "emit metrics"
+  - bash: ./scripts/delete.sh
+    displayName: "cleanup resource group"
+    condition: always()

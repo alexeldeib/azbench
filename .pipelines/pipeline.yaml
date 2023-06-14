@@ -15,7 +15,7 @@ schedules:
     - main
 
 pool:
-  name: ace-test
+  name: $(POOL_NAME)
 
 jobs:
 - template: jobs/matrix.yaml
