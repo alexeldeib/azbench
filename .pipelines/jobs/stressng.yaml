@@ -49,8 +49,8 @@ jobs:
       TENANT_ID: $(tenant)
   - bash: ./scripts/cli.sh
     displayName: "install azure cli preview"
-  - bash: ./scripts/capture.sh
-    displayName: "initialize metrics capture"
+  # - bash: ./scripts/capture.sh
+  #   displayName: "initialize metrics capture"
   - bash: ./scripts/cluster.sh
     displayName: "provision azure resources"
     env:
