@@ -39,13 +39,16 @@ kustomize build manifests/stressng | kubectl apply -f -
 echo "Waiting for stressng rollout"
 retry 3 kubectl rollout status deploy/stressng
 
+kubectl describe deploy stressng
+
 # no idea if this works
 # adapted from something I know does work:
 # https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
-timeout 1200s kubectl get node -w | tee logs | grep -q 'NotReady'
+timeout 120s kubectl get node -w | tee logs
+tail -n 100 logs
+grep 'NotReady' logs
 ret=$?
-cat logs
-if [ "${ret}" != "0" ] && [ "${ret}" != "124" ]; then
+if [ "${ret}" != "0" ]; then
   kubectl describe node
   echo "some nodes went not ready during run"
   exit ${ret}
