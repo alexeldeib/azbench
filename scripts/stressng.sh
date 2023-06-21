@@ -52,7 +52,7 @@ timeout 120s kubectl get node -w | tee logs
 tail -n 100 logs
 grep 'NotReady' logs
 ret=$?
-if [ "${ret}" != "0" ]; then
+if [ "${ret}" == "1" ]; then
   kubectl describe node
   echo "some nodes went not ready during run"
   exit ${ret}
