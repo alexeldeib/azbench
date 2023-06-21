@@ -15,7 +15,7 @@ export ACTION="${ACTION:-}"
 set -o errexit # has to be after cat /dev/urandom piece
 
 set +o nounset
-source azure-cli-extensions/venv/bin/activate
+# source azure-cli-extensions/venv/bin/activate
 set -o nounset
 
 echo "Creating resource group"
