@@ -1,4 +1,4 @@
-name: azbench
+name: $(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 trigger:
   branches:
     include: ["ace/stress"]
