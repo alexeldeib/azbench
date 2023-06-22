@@ -1,0 +1,111 @@
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: stress
+#   namespace: stress
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name stressng
+  labels:
+    azbench: ""
+    app: *name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+        ver: "1"
+    spec:
+      # nodeSelector:
+      #   kubernetes.io/hostname: aks-bigboi-33888842-vmss000001
+      containers:
+      - name: stress
+        image: docker.io/alexeldeib/stressng:latest
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: jobfile
+          readOnly: true
+          mountPath: /stress/jobs
+        - name: tmp-dir
+          mountPath: /tmp
+      volumes:
+      - name: jobfile
+        configMap:
+          name: stress-config
+      # mount in tmp so we can safely use from-scratch images and/or read-only containers
+      - name: tmp-dir
+        emptyDir: {}
+      terminationGracePeriodSeconds: 5
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stress-config
+data:
+  jobfile: |
+    # run sequential   # run stressors sequentially
+    # verbose          # verbose output
+    metrics-brief    # show metrics at end of run
+    timeout 600s      # stop each stressor after 60 seconds
+    temp-path /tmp
+
+    ################################################################################
+    # runs 4 cpu stressors, 2 io stressors and 1 vm stressor using 1GB of virtual
+    # memory.
+    ################################################################################
+    all 0
+    class cpu,cpu-cache,io
+    maximize
+    aggressive
+    # exclude bad-altstack,bigheap,brk,dev-shm,env,madvise,malloc,mlock,mlockmany,mmap,mmapaddr,mmapfixed,mmapfork,mmaphuge,mmapmany,mremap,msync,munmap,pageswap,physpage,shm,shm-sysv,stack,stackmmap,swap,tmpfs,userfaultfd,vm,vm-addr,vm-rw,vm-segv,vm-splice,watchdog
+    # cpu 1
+    # matrix 4
+    # io 1
+    # iomix 2
+    # iomix-bytes 60%
+    # vm 1
+    # vm-bytes 20%
+    # page-in
+    # brk 1
+    # stack 1
+    # bigheap 1
+
+    ################################################################################
+    # run 8 virtual memory stressors that combined use 80% of the available memory.
+    # Thus each stressor uses 10% of the available memory.
+    ################################################################################
+    #vm 8
+    #vm-bytes 80%
+    #
+    # vm stressor options:
+    #
+    # vm 2             # 2 vm stressors
+    # vm-bytes 1G    # 128MB available memory
+    # vm-keep          # keep vm mapping
+    # vm-populate      # populate memory
+
+    ################################################################################
+    # runs 2 instances of the mixed I/O stressors using a total of 10% of the 
+    # available file system space. Each stressor will use 5% of the available file 
+    # system space.
+    ################################################################################
+    # iomix 2
+    # iomix-bytes 10%
+
+    ################################################################################
+    # runs 2 instances of
+    ################################################################################
+    #
+    # memcpy stressor options:
+    #
+    # memcpy 5         # 5 memcpy stressors
+---

@@ -1,21 +1,21 @@
-name: azbench
+name: $(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 trigger:
   branches:
-    include: ["*"]
+    include: ["ace/stress"]
 
 pr:
   branches:
     include: ["*"]
 
-schedules:
-- cron: "0 */4 * * *"
-  displayName: hourly test run
-  branches:
-    include:
-    - main
+# schedules:
+# - cron: "0 */4 * * *"
+#   displayName: hourly test run
+#   branches:
+#     include:
+#     - main
 
 pool:
-  name: ace-test
+  name: $(POOL_NAME)
 
 jobs:
 - template: jobs/matrix.yaml

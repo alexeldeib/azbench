@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+
+i=0
+while true; do
+    echo "Running stress iteration: ${i}"
+    cat jobs/jobfile
+    time stress-ng --job jobs/jobfile
+    ((i=i+1))
+done

@@ -3,7 +3,7 @@ default: push-all deploy
 deploy:
 	./scripts/deploy.sh
 
-push-all: (push "postgresql") (push "pgbench") (push "nsenter") (push "pgio")
+push-all: (push "postgresql") (push "pgbench") (push "nsenter") (push "pgio") (push "stressng") 
 
 push APP: (dockerize APP)
 	docker push alexeldeib/{{APP}}:latest

@@ -16,16 +16,18 @@ echo $METADATA | jq .
 
 SUBSCRIPTION="$(echo $METADATA | jq -r .compute.subscriptionId)"
 GROUP="$(echo $METADATA | jq -r .compute.resourceGroupName)"
-IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${GROUP}-identity"
+IDENTITY="/subscriptions/${SUBSCRIPTION}/resourceGroups/${GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/nodesig-agent-identity"
 
-echo "Subscription ID: ${SUBSCRIPTION}"
+# echo "Subscription ID: ${SUBSCRIPTION}"
 echo "resourceGroupName: ${GROUP}"
 echo "Managed identity: ${IDENTITY}"
 
 echo "logging into azure"
 
+az login --identity
+
 # az login --identity --allow-no-subscriptions -u "${IDENTITY}"
 
-az login --service-principal --username "${CLIENT_APP}" --password "${CLIENT_PASSWORD}" --tenant "${TENANT_ID}"
+# az login --service-principal --username "${CLIENT_APP}" --password "${CLIENT_PASSWORD}" --tenant "${TENANT_ID}"
 
 echo "successfully logged in!"
