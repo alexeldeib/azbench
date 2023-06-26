@@ -58,7 +58,7 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-    - template: stressng.yaml
+  - template: stressng.yaml
     parameters:
       vmsize: 'STANDARD_M208MS_V2'
       osdisktype: 'default'
