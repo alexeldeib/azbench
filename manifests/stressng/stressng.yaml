@@ -52,11 +52,11 @@ metadata:
   name: stress-config
 data:
   jobfile: |
-  # run stressors sequentially
-  # verbose output
-  metrics-brief
-  timeout 300s
-  temp-path /tmp
-
-  stress-ng --all 32 --vm-bytes 1G --timeout 300s --metrics-brief
+    # run sequential   # run stressors sequentially
+    # verbose          # verbose output
+    metrics-brief    # show metrics at end of run
+    timeout 600s      # stop each stressor after 60 seconds
+    temp-path /tmp
+    all 32
+    vm-bytes 1G
 ---

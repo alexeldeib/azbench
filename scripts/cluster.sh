@@ -60,16 +60,27 @@ echo "Creating user nodepool"
 #     --node-osdisk-type="${NODE_OSDISK_TYPE}" \
 #     --node-osdisk-size "${NODE_OSDISK_SIZE}" > nodepool.json
 
-az aks nodepool add -g "${GROUP}" \
-    --cluster-name "${GROUP}" \
-    -n agentpool1 \
-    -k 1.26.3 \
-    -c 3 \
-    --enable-node-public-ip \
-    --mode User \
-    --node-vm-size "${NODE_VM_SIZE}" \
-    ${NODE_OSDISK_TYPE:+--node-osdisk-type "${NODE_OSDISK_TYPE}"} \
-    ${NODE_OSDISK_SIZE:+--node-osdisk-size "${NODE_OSDISK_SIZE}"} > nodepool.json
+if [[ -z "${NODE_OSDISK_TYPE}" || -z "${NODE_OSDISK_SIZE}" ]]; then
+    az aks nodepool add -g "${GROUP}" \
+        --cluster-name "${GROUP}" \
+        -n agentpool1 \
+        -k 1.26.3 \
+        -c 3 \
+        --enable-node-public-ip \
+        --mode User \
+        --node-vm-size "${NODE_VM_SIZE}" > nodepool.json
+else
+    az aks nodepool add -g "${GROUP}" \
+        --cluster-name "${GROUP}" \
+        -n agentpool1 \
+        -k 1.26.3 \
+        -c 3 \
+        --enable-node-public-ip \
+        --mode User \
+        --node-vm-size "${NODE_VM_SIZE}" \
+        --node-osdisk-type="${NODE_OSDISK_TYPE}" \
+        --node-osdisk-size "${NODE_OSDISK_SIZE}" > nodepool.json
+fi
 
 echo "Fetching kubeconfig"
 
