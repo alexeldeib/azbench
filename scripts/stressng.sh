@@ -7,7 +7,7 @@ export PATH=$PATH:${HOME}/bin
 
 BASH_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
 cd "$BASH_ROOT"
-
+TOTAL_SECONDS=300
 
 # Retries a command on failure.
 # $1 - the max number of attempts
@@ -32,15 +32,24 @@ function retry() {
 
 
 # errexit should be after the above, since they return non-zero exit codes (???)
+# set -o errexit
+
+# echo "Applying stressng manifests"
+# kustomize build manifests/stressng | kubectl apply -f -
+
+# echo "Waiting for stressng rollout"
+# retry 3 kubectl rollout status deploy/stressng
+
+# kubectl describe deploy stressng
+
 set -o errexit
+echo "Creating stressng pod"
+kubectl create -f manifests/stress-ng-app.yaml
 
-echo "Applying stressng manifests"
-kustomize build manifests/stressng | kubectl apply -f -
+sleep 15
+kubectl exec -it stress-ng-app -- stress-ng --all 8 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief
 
-echo "Waiting for stressng rollout"
-retry 3 kubectl rollout status deploy/stressng
-
-kubectl describe deploy stressng
+kubectl describe pod
 
 # no idea if this works
 # adapted from something I know does work:
@@ -48,7 +57,7 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 set +o errexit
 
-timeout 300s kubectl get node -w | tee logs
+timeout ${TOTAL_SECONDS}s kubectl get node -w | tee logs
 
 # might need to change timeout
 tail -n 100 logs
