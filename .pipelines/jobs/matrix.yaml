@@ -83,7 +83,7 @@ jobs:
       action: '${{ action }}'
   - template: stressng.yaml
     parameters:
-      vmsize: 'STANDARD_HB120RS_V2	'
+      vmsize: 'STANDARD_HB120RS_V2'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
