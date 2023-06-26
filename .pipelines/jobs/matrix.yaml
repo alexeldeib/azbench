@@ -11,8 +11,6 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_DS2_v2'
-      osdisktype: 'Ephemeral'
-      osdisksize: '100' 
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
