@@ -26,22 +26,6 @@ jobs:
       action: '${{ action }}'
   - template: stressng.yaml
     parameters:
-      vmsize: 'Standard_ES2_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_ES4_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
       vmsize: 'STANDARD_M208MS_V2'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
