@@ -48,7 +48,7 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 set +o errexit
 
-timeout 120s kubectl get node -w | tee logs
+timeout 300s kubectl get node -w | tee logs
 
 # might need to change timeout
 tail -n 100 logs

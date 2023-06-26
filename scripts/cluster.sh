@@ -49,6 +49,17 @@ az aks create -g "${GROUP}" \
 
 echo "Creating user nodepool"
 
+# az aks nodepool add -g "${GROUP}" \
+#     --cluster-name "${GROUP}" \
+#     -n agentpool1 \
+#     -k 1.26.3 \
+#     -c 3 \
+#     --enable-node-public-ip \
+#     --mode User \
+#     --node-vm-size "${NODE_VM_SIZE}" \
+#     --node-osdisk-type="${NODE_OSDISK_TYPE}" \
+#     --node-osdisk-size "${NODE_OSDISK_SIZE}" > nodepool.json
+
 az aks nodepool add -g "${GROUP}" \
     --cluster-name "${GROUP}" \
     -n agentpool1 \
@@ -57,8 +68,8 @@ az aks nodepool add -g "${GROUP}" \
     --enable-node-public-ip \
     --mode User \
     --node-vm-size "${NODE_VM_SIZE}" \
-    --node-osdisk-type="${NODE_OSDISK_TYPE}" \
-    --node-osdisk-size "${NODE_OSDISK_SIZE}" > nodepool.json
+    ${NODE_OSDISK_TYPE:+--node-osdisk-type "${NODE_OSDISK_TYPE}"} \
+    ${NODE_OSDISK_SIZE:+--node-osdisk-size "${NODE_OSDISK_SIZE}"} > nodepool.json
 
 echo "Fetching kubeconfig"
 

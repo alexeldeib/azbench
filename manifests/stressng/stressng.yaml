@@ -52,60 +52,11 @@ metadata:
   name: stress-config
 data:
   jobfile: |
-    # run sequential   # run stressors sequentially
-    # verbose          # verbose output
-    metrics-brief    # show metrics at end of run
-    timeout 600s      # stop each stressor after 60 seconds
-    temp-path /tmp
+  # run stressors sequentially
+  # verbose output
+  metrics-brief
+  timeout 300s
+  temp-path /tmp
 
-    ################################################################################
-    # runs 4 cpu stressors, 2 io stressors and 1 vm stressor using 1GB of virtual
-    # memory.
-    ################################################################################
-    all 0
-    class cpu,cpu-cache,io
-    maximize
-    aggressive
-    # exclude bad-altstack,bigheap,brk,dev-shm,env,madvise,malloc,mlock,mlockmany,mmap,mmapaddr,mmapfixed,mmapfork,mmaphuge,mmapmany,mremap,msync,munmap,pageswap,physpage,shm,shm-sysv,stack,stackmmap,swap,tmpfs,userfaultfd,vm,vm-addr,vm-rw,vm-segv,vm-splice,watchdog
-    # cpu 1
-    # matrix 4
-    # io 1
-    # iomix 2
-    # iomix-bytes 60%
-    # vm 1
-    # vm-bytes 20%
-    # page-in
-    # brk 1
-    # stack 1
-    # bigheap 1
-
-    ################################################################################
-    # run 8 virtual memory stressors that combined use 80% of the available memory.
-    # Thus each stressor uses 10% of the available memory.
-    ################################################################################
-    #vm 8
-    #vm-bytes 80%
-    #
-    # vm stressor options:
-    #
-    # vm 2             # 2 vm stressors
-    # vm-bytes 1G    # 128MB available memory
-    # vm-keep          # keep vm mapping
-    # vm-populate      # populate memory
-
-    ################################################################################
-    # runs 2 instances of the mixed I/O stressors using a total of 10% of the 
-    # available file system space. Each stressor will use 5% of the available file 
-    # system space.
-    ################################################################################
-    # iomix 2
-    # iomix-bytes 10%
-
-    ################################################################################
-    # runs 2 instances of
-    ################################################################################
-    #
-    # memcpy stressor options:
-    #
-    # memcpy 5         # 5 memcpy stressors
+  stress-ng --all 32 --vm-bytes 1G --timeout 300s --metrics-brief
 ---
