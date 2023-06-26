@@ -49,6 +49,8 @@ kubectl describe deploy stressng
 set +o errexit
 
 timeout 120s kubectl get node -w | tee logs
+
+# might need to change timeout
 tail -n 100 logs
 grep 'NotReady' logs
 ret=$?

@@ -1,13 +1,33 @@
 parameters:
   cache_types: ['ReadWrite', 'ReadOnly', 'None']
-  jobs: '2'
+  jobs: '4'
   clients: '4'
   duration: '600'
   scalefactors: [4800]
-  actions: ['donothing', 'kubeslice']
+  actions: ['kubeslice']
 
 jobs:
 - ${{ each action in parameters.actions }}:
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_DS2_v2'
+      osdisktype: 'Ephemeral'
+      osdisksize: '100' 
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_DS2_v2'
+      osdisktype: 'Managed'
+      osdisksize: '512' 
+      caching: "ReadOnly" 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_D4ads_v5'
@@ -28,49 +48,3 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-  # - ${{ each caching in parameters.cache_types }}:
-  #   - template: pgbench.yaml
-  #     parameters:
-  #       vmsize: 'Standard_D4s_v3'
-  #       osdisktype: 'Managed'
-  #       osdisksize: '500' 
-  #       caching: ${{ caching }}
-  #       scalefactor: ${{ scalefactor }} 
-  #       jobs: '${{ parameters.jobs }}'
-  #       client: '${{ parameters.clients }}'
-  #       duration: '${{ parameters.duration }}'
-  #       action: '${{ action }}'
-  #   - template: pgbench.yaml
-  #     parameters:
-  #       vmsize: 'Standard_D4s_v3'
-  #       osdisktype: 'Managed'
-  #       osdisksize: '2048' 
-  #       caching: ${{ caching }}
-  #       scalefactor: ${{ scalefactor }} 
-  #       jobs: '${{ parameters.jobs }}'
-  #       client: '${{ parameters.clients }}'
-  #       duration: '${{ parameters.duration }}'
-  #       action: '${{ action }}'
-  #   - template: pgbench.yaml
-  #     parameters:
-  #       vmsize: 'Standard_D16s_v3'
-  #       osdisktype: 'Managed'
-  #       osdisksize: '500' 
-  #       caching: ${{ caching }}
-  #       scalefactor: ${{ scalefactor }} 
-  #       jobs: '${{ parameters.jobs }}'
-  #       client: '${{ parameters.clients }}'
-  #       duration: '${{ parameters.duration }}'
-  #       action: '${{ action }}'
-  # - template: pgbench.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D16s_v3'
-  #     osdisktype: 'Managed'
-  #     osdisksize: '2048' 
-  #     caching: "None"
-  #     scalefactor: ${{ scalefactor }} 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
-      
