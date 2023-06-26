@@ -6,7 +6,7 @@ parameters:
   action: ''
 
 jobs:
-- job: ${{ format('{0}_{1}GB_{2}_{3}', parameters.vmsize, parameters.osdisksize, parameters.osdisktype, parameters.action) if and(parameters.osdisksize, parameters.osdisktype) else format('{0}_{1}', parameters.vmsize, parameters.action) }}
+- job: ${{ format('{0}_{1}GB_{2}_{3}', parameters.vmsize, parameters.osdisksize, parameters.osdisktype, parameters.action) }}
   displayName: ${{ format('{0}_{1}GB_{2}_{3}', parameters.vmsize, parameters.osdisksize, parameters.osdisktype, parameters.action) }}
   timeoutInMinutes: 600
   workspace:
