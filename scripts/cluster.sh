@@ -60,7 +60,7 @@ echo "Creating user nodepool"
 #     --node-osdisk-type="${NODE_OSDISK_TYPE}" \
 #     --node-osdisk-size "${NODE_OSDISK_SIZE}" > nodepool.json
 
-if [[ "${NODE_OSDISK_TYPE}" == "default" || "${NODE_OSDISK_SIZE}" == "default" ]]; then
+if [[ -z "${NODE_OSDISK_TYPE}" || -z "${NODE_OSDISK_SIZE}" ]]; then
     az aks nodepool add -g "${GROUP}" \
         --cluster-name "${GROUP}" \
         -n agentpool1 \
