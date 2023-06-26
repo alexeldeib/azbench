@@ -57,6 +57,6 @@ data:
     metrics-brief    # show metrics at end of run
     timeout 600s      # stop each stressor after 60 seconds
     temp-path /tmp
-    all 4
+    all 2
     vm-bytes 1G
 ---
