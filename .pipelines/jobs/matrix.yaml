@@ -11,18 +11,8 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_DS2_v2'
-      osdisktype: 'default'
-      osdisksize: 'default'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS2_v2'
-      osdisktype: 'default'
-      osdisksize: 'default'
+      osdisktype: 'x'
+      osdisksize: 'x'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
@@ -31,8 +21,8 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_DS4_v2'
-      osdisktype: 'default'
-      osdisksize: 'default'
+      osdisktype: 'x'
+      osdisksize: 'x'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
@@ -41,8 +31,8 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_ES2_v2'
-      osdisktype: 'default'
-      osdisksize: 'default'
+      osdisktype: 'x'
+      osdisksize: 'x'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
@@ -51,8 +41,8 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_ES4_v2'
-      osdisktype: 'default'
-      osdisksize: 'default'
+      osdisktype: 'x'
+      osdisksize: 'x'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
@@ -61,8 +51,8 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'STANDARD_M208MS_V2'
-      osdisktype: 'default'
-      osdisksize: 'default'
+      osdisktype: 'x'
+      osdisksize: 'x'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
