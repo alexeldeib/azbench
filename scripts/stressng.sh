@@ -44,10 +44,10 @@ function retry() {
 
 set -o errexit
 echo "Creating stressng pod"
-kubectl create -f manifests/stress-ng-app.yaml
+kubectl create -f manifests/stress-ng.yaml
 
 sleep 15
-kubectl exec -it stress-ng-app -- stress-ng --all 8 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief
+kubectl exec -it stress-ng -- stress-ng --all 8 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief
 
 kubectl describe pod
 
