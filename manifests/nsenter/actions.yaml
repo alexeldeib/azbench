@@ -189,6 +189,7 @@ data:
     tee "${kubelet_dropin_file}" > /dev/null <<EOF
     [Service]
     Slice="${kube_slice_name}"
+    MemoryMin=300000000
     EOF
 
     tee "${containerd_dropin_file}" > /dev/null <<EOF

@@ -55,6 +55,7 @@ tail -n 100 logs
 grep 'NotReady' logs
 ret=$?
 if [ "${ret}" == "1" ]; then
+
   echo "Displaying results..."
 
   echo "Describing Node..."
