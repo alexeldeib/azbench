@@ -252,7 +252,6 @@ data:
     tee "${kubelet_dropin_file}" > /dev/null <<EOF
     [Service]
     MemoryMin=300000000
-    MemoryLow=300000000
     Slice="${kube_slice_name}"
     EOF
 
@@ -262,6 +261,7 @@ data:
     EOF
 
     # maybe easiest to kick all processes
+    systemctl daemon-reload && systemctl restart kubelet
     reboot now
 
   kubeslice3: |-
