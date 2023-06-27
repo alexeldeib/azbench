@@ -64,15 +64,6 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS3_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_DS3_v2'
@@ -108,14 +99,6 @@ jobs:
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_K8S2_v1'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D16s_v3'
       caching: ReadOnly 
       jobs: '${{ parameters.jobs }}'
       client: '${{ parameters.clients }}'
