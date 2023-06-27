@@ -55,18 +55,32 @@ tail -n 100 logs
 grep 'NotReady' logs
 ret=$?
 if [ "${ret}" == "1" ]; then
+  echo "Describing Node..."
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
   kubectl describe node
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+  echo
+
+  echo "Getting Events..."
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
   kubectl get events
   printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
-  
+  echo
+
   echo "some nodes went not ready during run"
   exit ${ret}
 fi
-kubectl get node
+
+echo "Describing Node..."
 printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 kubectl describe node
 printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+echo
+
+echo "Getting Events..."
+printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
 kubectl get events
+printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+echo
 
 echo "Successfully ran stressng without failures"
