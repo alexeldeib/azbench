@@ -35,8 +35,8 @@ function retry() {
 set -o errexit
 
 echo "Applying stressng manifests"
-kubectl create -f manifests/stressng/stressng.yaml
-# kustomize build manifests/stressng | kubectl apply -f -
+# kubectl create -f manifests/stressng/stressng.yaml
+kustomize build manifests/stressng | kubectl apply -f -
 
 echo "Waiting for stressng rollout"
 retry 3 kubectl rollout status deploy/stressng
@@ -51,58 +51,9 @@ set +o errexit
 
 timeout ${TOTAL_SECONDS}s kubectl get node -w | tee logs
 
-# might need to change timeout
-tail -n 100 logs
-grep 'NotReady' logs
-ret=$?
-if [ "${ret}" == "1" ]; then
-
-    # echo "Displaying results..."
-
-    # echo "Describing Node..."
-    # kubectl describe node
-
-    # echo "Getting Events..."
-    # kubectl get events
-
-    # echo "Creating Report..."
-
-    # if kubectl get events | grep "NodeHasMemoryPressure"; then
-    #     echo "Found events with NodeHasMemoryPressure"
-    # else
-    #     echo "No events found with NodeHasMemoryPressure"
-    # fi
-
-    # if kubectl get events | grep "NodeHasDiskPressure"; then
-    #     echo "Found events with NodeHasDiskPressure"
-    # else
-    #     echo "No events found with NodeHasDiskPressure"
-    # fi
-
+if grep -q 'NotReady' logs; then
     echo "some nodes went not ready during run"
-    exit ${ret}
+    exit 1
+else
+    echo "Successfully ran stressng without failures"
 fi
-
-# echo "Displaying results..."
-
-# echo "Describing Node..."
-# kubectl describe node
-
-# echo "Getting Events..."
-# kubectl get events
-
-# echo "Creating Report..."
-
-# if kubectl get events | grep "NodeHasMemoryPressure"; then
-#     echo "Found events with NodeHasMemoryPressure"
-# else
-#     echo "No events found with NodeHasMemoryPressure"
-# fi
-
-# if kubectl get events | grep "NodeHasDiskPressure"; then
-#     echo "Found events with NodeHasDiskPressure"
-# else
-#     echo "No events found with NodeHasDiskPressure"
-# fi
-
-echo "Successfully ran stressng without failures"
