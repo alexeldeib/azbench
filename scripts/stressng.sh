@@ -67,13 +67,13 @@ if [ "${ret}" == "1" ]; then
     echo "Creating Report..."
 
     echo "Was there any pressure? =>"
-    if k get events | grep "NodeHasMemoryPressure"; then
+    if kubectl get events | grep "NodeHasMemoryPressure"; then
         echo "Found events with NodeHasMemoryPressure"
     else
         echo "No events found with NodeHasMemoryPressure"
     fi
 
-    if k get events | grep "NodeHasDiskPressure"; then
+    if kubectl get events | grep "NodeHasDiskPressure"; then
         echo "Found events with NodeHasDiskPressure"
     else
         echo "No events found with NodeHasDiskPressure"
@@ -94,13 +94,13 @@ kubectl get events
 echo "Creating Report..."
 
 echo "Was there any pressure? =>"
-if k get events | grep "NodeHasMemoryPressure"; then
+if kubectl get events | grep "NodeHasMemoryPressure"; then
     echo "Found events with NodeHasMemoryPressure"
 else
     echo "No events found with NodeHasMemoryPressure"
 fi
 
-if k get events | grep "NodeHasDiskPressure"; then
+if kubectl get events | grep "NodeHasDiskPressure"; then
     echo "Found events with NodeHasDiskPressure"
 else
     echo "No events found with NodeHasDiskPressure"
