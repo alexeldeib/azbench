@@ -56,15 +56,14 @@ data:
     metrics-brief    # show metrics at end of run
     timeout 120s      # stop each stressor after 60 seconds
     temp-path /tmp
-    cpu 1
 
     ################################################################################
     # runs 4 cpu stressors, 2 io stressors and 1 vm stressor using 1GB of virtual
     # memory.
     ################################################################################
-    # all 0
+    all 0
     # class cpu,cpu-cache,io,os,scheduler
-    # maximize
+    maximize
     aggressive
     # exclude bad-altstack,bigheap,brk,dev-shm,env,madvise,malloc,mlock,mlockmany,mmap,mmapaddr,mmapfixed,mmapfork,mmaphuge,mmapmany,mremap,msync,munmap,pageswap,physpage,shm,shm-sysv,stack,stackmmap,swap,tmpfs,userfaultfd,vm,vm-addr,vm-rw,vm-segv,vm-splice,watchdog
     # cpu 1
