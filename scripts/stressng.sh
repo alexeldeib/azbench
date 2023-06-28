@@ -54,12 +54,8 @@ timeout ${TOTAL_SECONDS}s kubectl get node -w | tee logs
 if grep -q 'NotReady' logs; then
     kubectl get events
 
-    kubectl get events | grep 'NodePressure"
-
-    kubectl get events | grep 'MemoryPressure"
-
     echo "some nodes went not ready during run"
-    exit 1
-else
-    echo "Successfully ran stressng without failures"
+    exit 1 
 fi
+
+echo "Successfully ran stressng without failures"
