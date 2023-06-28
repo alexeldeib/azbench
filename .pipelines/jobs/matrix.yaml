@@ -2,7 +2,7 @@ parameters:
   cache_types: ['ReadWrite', 'ReadOnly', 'None']
   jobs: '4'
   clients: '4'
-  duration: '300'
+  duration: '600'
   scalefactors: [4800]
   actions: ['kubeslice', 'kubelet_reservation']
 
