@@ -56,25 +56,25 @@ data:
     #### MEMORY STRESS TESTS ####
     #############################
     # ["VM-2"]="stress-ng --all 2 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief"
-    metrics-brief    # show metrics at end of run
-    timeout 600s      # stop each stressor after 60 seconds
-    temp-path /tmp
-    all 2
-    vm-bytes 1G
+    # metrics-brief    # show metrics at end of run
+    # timeout 600s      # stop each stressor after 60 seconds
+    # temp-path /tmp
+    # all 2
+    # vm-bytes 1G
 
     # ["VM-3"]="stress-ng --all 4 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief"
     # metrics-brief    # show metrics at end of run
     # timeout 600s      # stop each stressor after 60 seconds
     # temp-path /tmp
     # all 4
-    vm-bytes 1G
+    # vm-bytes 1G
 
     # ["VM-4"]="stress-ng --all 8 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief"
-    # metrics-brief    # show metrics at end of run
-    # timeout 600s      # stop each stressor after 60 seconds
-    # temp-path /tmp
-    # all 8
-    # vm-bytes 1G
+    metrics-brief    # show metrics at end of run
+    timeout 600s      # stop each stressor after 60 seconds
+    temp-path /tmp
+    vm 8
+    vm-bytes 1G
 
     # ["VM-5"]="stress-ng --all 16 --vm-bytes 1G --timeout ${TOTAL_SECONDS}s --metrics-brief"
     # metrics-brief    # show metrics at end of run
