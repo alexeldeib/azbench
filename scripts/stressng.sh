@@ -32,15 +32,16 @@ function retry() {
 
 
 # errexit should be after the above, since they return non-zero exit codes (???)
-# set -o errexit
+set -o errexit
 
-# echo "Applying stressng manifests"
+echo "Applying stressng manifests"
+kubectl create -f manifests/stressng/stressng.yaml
 # kustomize build manifests/stressng | kubectl apply -f -
 
-# echo "Waiting for stressng rollout"
-# retry 3 kubectl rollout status deploy/stressng
+echo "Waiting for stressng rollout"
+retry 3 kubectl rollout status deploy/stressng
 
-# kubectl describe deploy stressng
+kubectl describe deploy stressng
 
 # no idea if this works
 # adapted from something I know does work:
