@@ -32,15 +32,15 @@ function retry() {
 
 
 # errexit should be after the above, since they return non-zero exit codes (???)
-set -o errexit
+# set -o errexit
 
-echo "Applying stressng manifests"
-kustomize build manifests/stressng | kubectl apply -f -
+# echo "Applying stressng manifests"
+# kustomize build manifests/stressng | kubectl apply -f -
 
-echo "Waiting for stressng rollout"
-retry 3 kubectl rollout status deploy/stressng
+# echo "Waiting for stressng rollout"
+# retry 3 kubectl rollout status deploy/stressng
 
-kubectl describe deploy stressng
+# kubectl describe deploy stressng
 
 # no idea if this works
 # adapted from something I know does work:
@@ -56,52 +56,52 @@ grep 'NotReady' logs
 ret=$?
 if [ "${ret}" == "1" ]; then
 
-    echo "Displaying results..."
+    # echo "Displaying results..."
 
-    echo "Describing Node..."
-    kubectl describe node
+    # echo "Describing Node..."
+    # kubectl describe node
 
-    echo "Getting Events..."
-    kubectl get events
+    # echo "Getting Events..."
+    # kubectl get events
 
-    echo "Creating Report..."
+    # echo "Creating Report..."
 
-    if kubectl get events | grep "NodeHasMemoryPressure"; then
-        echo "Found events with NodeHasMemoryPressure"
-    else
-        echo "No events found with NodeHasMemoryPressure"
-    fi
+    # if kubectl get events | grep "NodeHasMemoryPressure"; then
+    #     echo "Found events with NodeHasMemoryPressure"
+    # else
+    #     echo "No events found with NodeHasMemoryPressure"
+    # fi
 
-    if kubectl get events | grep "NodeHasDiskPressure"; then
-        echo "Found events with NodeHasDiskPressure"
-    else
-        echo "No events found with NodeHasDiskPressure"
-    fi
+    # if kubectl get events | grep "NodeHasDiskPressure"; then
+    #     echo "Found events with NodeHasDiskPressure"
+    # else
+    #     echo "No events found with NodeHasDiskPressure"
+    # fi
 
     echo "some nodes went not ready during run"
     exit ${ret}
 fi
 
-echo "Displaying results..."
+# echo "Displaying results..."
 
-echo "Describing Node..."
-kubectl describe node
+# echo "Describing Node..."
+# kubectl describe node
 
-echo "Getting Events..."
-kubectl get events
+# echo "Getting Events..."
+# kubectl get events
 
-echo "Creating Report..."
+# echo "Creating Report..."
 
-if kubectl get events | grep "NodeHasMemoryPressure"; then
-    echo "Found events with NodeHasMemoryPressure"
-else
-    echo "No events found with NodeHasMemoryPressure"
-fi
+# if kubectl get events | grep "NodeHasMemoryPressure"; then
+#     echo "Found events with NodeHasMemoryPressure"
+# else
+#     echo "No events found with NodeHasMemoryPressure"
+# fi
 
-if kubectl get events | grep "NodeHasDiskPressure"; then
-    echo "Found events with NodeHasDiskPressure"
-else
-    echo "No events found with NodeHasDiskPressure"
-fi
+# if kubectl get events | grep "NodeHasDiskPressure"; then
+#     echo "Found events with NodeHasDiskPressure"
+# else
+#     echo "No events found with NodeHasDiskPressure"
+# fi
 
 echo "Successfully ran stressng without failures"

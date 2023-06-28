@@ -107,4 +107,29 @@ data:
     # memcpy stressor options:
     #
     # memcpy 5         # 5 memcpy stressors
+
+    ##########################
+    ### CPU STRESS TESTING ###
+    ##########################
+    cpu 1
+
+    #########################
+    ### VM STRESS TESTING ###
+    #########################
+    # vm 8
+    # vm-bytes 80%
+    # io 2
+    # cpu 2
+
+    ##############################
+    ### GENERAL STRESS TESTING ###
+    ##############################
+    # all 2
+    # all 4
+    # all 8
+    # all 16
+    # all 32
+
+    # vm-bytes 60%
+    # vm-bytes 80%
 ---
