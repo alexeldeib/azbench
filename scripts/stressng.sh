@@ -66,7 +66,6 @@ if [ "${ret}" == "1" ]; then
 
     echo "Creating Report..."
 
-    echo "Was there any pressure? =>"
     if kubectl get events | grep "NodeHasMemoryPressure"; then
         echo "Found events with NodeHasMemoryPressure"
     else
@@ -93,7 +92,6 @@ kubectl get events
 
 echo "Creating Report..."
 
-echo "Was there any pressure? =>"
 if kubectl get events | grep "NodeHasMemoryPressure"; then
     echo "Found events with NodeHasMemoryPressure"
 else
