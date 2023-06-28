@@ -4,7 +4,7 @@ parameters:
   clients: '4'
   duration: '600'
   scalefactors: [4800]
-  actions: ['kubeslice', 'system_reservation', 'kubelet_reservation', 'containerd_reservation']
+  actions: ['kubeslice', 'kubelet_reservation']
 
 jobs:
 - ${{ each action in parameters.actions }}:
