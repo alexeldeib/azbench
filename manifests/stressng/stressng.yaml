@@ -58,5 +58,5 @@ data:
     temp-path /tmp
 
     all 8
-    vm-bytes 100% 
+    vm-bytes 1G
 ---
