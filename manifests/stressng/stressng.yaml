@@ -57,6 +57,10 @@ data:
     timeout 600s      # stop each stressor after 60 seconds
     temp-path /tmp
 
-    all 8
-    vm-bytes 1G
+    all 0
+    class cpu,cpu-cache,io,os,scheduler,vm
+    # maximize
+    aggressive
+    #all 8
+    #vm-bytes 100%
 ---
