@@ -137,168 +137,182 @@ data:
     reboot now
 
   test1_original: |-
-      # maybe easiest to kick all processes
-      reboot now
+    #!/usr/bin/env bash
+    set -x
+
+    if [[ -f /opt/sentinel ]]; then
+      if [[ ! -z "$1" ]]; then
+        echo "received positional argument, forcing cleanup"
+        rm /opt/sentinel || true
+      else
+        echo "Already ran, exiting"
+        exit 0
+      fi
+    fi
+
+    echo "Doing nothing, dropping sentinel, and rebooting once"
+    touch /opt/sentinel
+    reboot now
 
   test2_kubeslice_upper: |-
-      kube_slice_file="/etc/systemd/system/kubereserved.slice"
-      system_slice_dropin="/etc/systemd/system.control/system.slice.d/50-Resources.conf"
-      kubelet_dropin_file="/etc/systemd/system/kubelet.service.d/10-kubereserved-slice.conf"
-      containerd_dropin_file="/etc/systemd/system/containerd.service.d/10-kubereserved-slice.conf"
-      kube_slice_name="$(basename "${kube_slice_file}")"
-      for f in "${kube_slice_file}" "${system_slice_dropin}" "${kubelet_dropin_file}" "${containerd_dropin_file}"; do
-        mkdir -p "$(dirname "${f}")"
-      done
+    kube_slice_file="/etc/systemd/system/kubereserved.slice"
+    system_slice_dropin="/etc/systemd/system.control/system.slice.d/50-Resources.conf"
+    kubelet_dropin_file="/etc/systemd/system/kubelet.service.d/10-kubereserved-slice.conf"
+    containerd_dropin_file="/etc/systemd/system/containerd.service.d/10-kubereserved-slice.conf"
+    kube_slice_name="$(basename "${kube_slice_file}")"
+    for f in "${kube_slice_file}" "${system_slice_dropin}" "${kubelet_dropin_file}" "${containerd_dropin_file}"; do
+      mkdir -p "$(dirname "${f}")"
+    done
 
-      if [[ -f "${containerd_dropin_file}" ]]; then
-        if [[ ! -z "$1" ]]; then
-          echo "received positional argument, forcing run"
-        else
-          echo "Already ran, exiting"
-          exit 0
-        fi
+    if [[ -f "${containerd_dropin_file}" ]]; then
+      if [[ ! -z "$1" ]]; then
+        echo "received positional argument, forcing run"
+      else
+        echo "Already ran, exiting"
+        exit 0
       fi
+    fi
 
-      tee "${kube_slice_file}" > /dev/null <<'EOF'
-      # This is a transient unit file, created programmatically via the systemd API. Do not edit.
-      [Unit]
-      Description=kubelet containerd slice
-      Wants=-.slice
+    tee "${kube_slice_file}" > /dev/null <<'EOF'
+    # This is a transient unit file, created programmatically via the systemd API. Do not edit.
+    [Unit]
+    Description=kubelet containerd slice
+    Wants=-.slice
 
-      [Slice]
-      MemoryAccounting=yes
-      CPUAccounting=yes
-      IOAccounting=yes
-      TasksAccounting=yes
+    [Slice]
+    MemoryAccounting=yes
+    CPUAccounting=yes
+    IOAccounting=yes
+    TasksAccounting=yes
 
-      [Unit]
-      DefaultDependencies=no
+    [Unit]
+    DefaultDependencies=no
 
-      [Slice]
-      CPUWeight=10000
-      MemoryMax=infinity
-      MemoryMin=915000000
-      MemoryLow=915000000
-      TasksMax=infinity
-      IODeviceLatencyTargetSec="/dev/sda 25ms"
-      EOF
+    [Slice]
+    CPUWeight=10000
+    MemoryMax=infinity
+    MemoryMin=915000000
+    MemoryLow=915000000
+    TasksMax=infinity
+    IODeviceLatencyTargetSec="/dev/sda 25ms"
+    EOF
 
-      tee "${system_slice_dropin}" > /dev/null <<'EOF'
-      [Slice]
-      CPUWeight=5000
-      MemoryMax=infinity
-      TasksMax=infinity
-      IODeviceLatencyTargetSec=
-      IODeviceLatencyTargetSec=/dev/sda 25ms
-      EOF
+    tee "${system_slice_dropin}" > /dev/null <<'EOF'
+    [Slice]
+    CPUWeight=5000
+    MemoryMax=infinity
+    TasksMax=infinity
+    IODeviceLatencyTargetSec=
+    IODeviceLatencyTargetSec=/dev/sda 25ms
+    EOF
 
-      tee "${kubelet_dropin_file}" > /dev/null <<EOF
-      [Service]
-      Slice="${kube_slice_name}"
-      EOF
+    tee "${kubelet_dropin_file}" > /dev/null <<EOF
+    [Service]
+    Slice="${kube_slice_name}"
+    EOF
 
-      tee "${containerd_dropin_file}" > /dev/null <<EOF
-      [Service]
-      Slice="${kube_slice_name}"
-      EOF
+    tee "${containerd_dropin_file}" > /dev/null <<EOF
+    [Service]
+    Slice="${kube_slice_name}"
+    EOF
 
-      # maybe easiest to kick all processes
-      reboot now
+    # maybe easiest to kick all processes
+    reboot now
 
   test2_kubeslice_lower: |-
-      kube_slice_file="/etc/systemd/system/kubereserved.slice"
-      system_slice_dropin="/etc/systemd/system.control/system.slice.d/50-Resources.conf"
-      kubelet_dropin_file="/etc/systemd/system/kubelet.service.d/10-kubereserved-slice.conf"
-      containerd_dropin_file="/etc/systemd/system/containerd.service.d/10-kubereserved-slice.conf"
-      kube_slice_name="$(basename "${kube_slice_file}")"
-      for f in "${kube_slice_file}" "${system_slice_dropin}" "${kubelet_dropin_file}" "${containerd_dropin_file}"; do
-        mkdir -p "$(dirname "${f}")"
-      done
+    kube_slice_file="/etc/systemd/system/kubereserved.slice"
+    system_slice_dropin="/etc/systemd/system.control/system.slice.d/50-Resources.conf"
+    kubelet_dropin_file="/etc/systemd/system/kubelet.service.d/10-kubereserved-slice.conf"
+    containerd_dropin_file="/etc/systemd/system/containerd.service.d/10-kubereserved-slice.conf"
+    kube_slice_name="$(basename "${kube_slice_file}")"
+    for f in "${kube_slice_file}" "${system_slice_dropin}" "${kubelet_dropin_file}" "${containerd_dropin_file}"; do
+      mkdir -p "$(dirname "${f}")"
+    done
 
-      if [[ -f "${containerd_dropin_file}" ]]; then
-        if [[ ! -z "$1" ]]; then
-          echo "received positional argument, forcing run"
-        else
-          echo "Already ran, exiting"
-          exit 0
-        fi
+    if [[ -f "${containerd_dropin_file}" ]]; then
+      if [[ ! -z "$1" ]]; then
+        echo "received positional argument, forcing run"
+      else
+        echo "Already ran, exiting"
+        exit 0
       fi
+    fi
 
-      tee "${kube_slice_file}" > /dev/null <<'EOF'
-      # This is a transient unit file, created programmatically via the systemd API. Do not edit.
-      [Unit]
-      Description=kubelet containerd slice
-      Wants=-.slice
+    tee "${kube_slice_file}" > /dev/null <<'EOF'
+    # This is a transient unit file, created programmatically via the systemd API. Do not edit.
+    [Unit]
+    Description=kubelet containerd slice
+    Wants=-.slice
 
-      [Slice]
-      MemoryAccounting=yes
-      CPUAccounting=yes
-      IOAccounting=yes
-      TasksAccounting=yes
+    [Slice]
+    MemoryAccounting=yes
+    CPUAccounting=yes
+    IOAccounting=yes
+    TasksAccounting=yes
 
-      [Unit]
-      DefaultDependencies=no
+    [Unit]
+    DefaultDependencies=no
 
-      [Slice]
-      CPUWeight=10000
-      MemoryMax=infinity
-      MemoryMin=261000000
-      MemoryLow=261000000
-      TasksMax=infinity
-      IODeviceLatencyTargetSec="/dev/sda 25ms"
-      EOF
+    [Slice]
+    CPUWeight=10000
+    MemoryMax=infinity
+    MemoryMin=261000000
+    MemoryLow=261000000
+    TasksMax=infinity
+    IODeviceLatencyTargetSec="/dev/sda 25ms"
+    EOF
 
-      tee "${system_slice_dropin}" > /dev/null <<'EOF'
-      [Slice]
-      CPUWeight=5000
-      MemoryMax=infinity
-      TasksMax=infinity
-      IODeviceLatencyTargetSec=
-      IODeviceLatencyTargetSec=/dev/sda 25ms
-      EOF
+    tee "${system_slice_dropin}" > /dev/null <<'EOF'
+    [Slice]
+    CPUWeight=5000
+    MemoryMax=infinity
+    TasksMax=infinity
+    IODeviceLatencyTargetSec=
+    IODeviceLatencyTargetSec=/dev/sda 25ms
+    EOF
 
-      tee "${kubelet_dropin_file}" > /dev/null <<EOF
-      [Service]
-      Slice="${kube_slice_name}"
-      EOF
+    tee "${kubelet_dropin_file}" > /dev/null <<EOF
+    [Service]
+    Slice="${kube_slice_name}"
+    EOF
 
-      tee "${containerd_dropin_file}" > /dev/null <<EOF
-      [Service]
-      Slice="${kube_slice_name}"
-      EOF
+    tee "${containerd_dropin_file}" > /dev/null <<EOF
+    [Service]
+    Slice="${kube_slice_name}"
+    EOF
 
-      # maybe easiest to kick all processes
-      reboot now
+    # maybe easiest to kick all processes
+    reboot now
 
   test3_systemslice: |-
-      system_slice_dropin="/etc/systemd/system.control/system.slice.d/50-Resources.conf"
-      kubelet_dropin_file="/etc/systemd/system/kubelet.service.d/10-kubereserved-slice.conf"
-      containerd_dropin_file="/etc/systemd/system/containerd.service.d/10-kubereserved-slice.conf"
+    system_slice_dropin="/etc/systemd/system.control/system.slice.d/50-Resources.conf"
+    kubelet_dropin_file="/etc/systemd/system/kubelet.service.d/10-kubereserved-slice.conf"
+    containerd_dropin_file="/etc/systemd/system/containerd.service.d/10-kubereserved-slice.conf"
 
-      tee "${system_slice_dropin}" > /dev/null <<'EOF'
-      [Slice]
-      CPUWeight=5000
-      MemoryMax=infinity
-      TasksMax=infinity
-      MemoryMin=915000000
-      MemoryLow=915000000
-      IODeviceLatencyTargetSec=
-      IODeviceLatencyTargetSec=/dev/sda 25ms
-      EOF
+    tee "${system_slice_dropin}" > /dev/null <<'EOF'
+    [Slice]
+    CPUWeight=5000
+    MemoryMax=infinity
+    TasksMax=infinity
+    MemoryMin=915000000
+    MemoryLow=915000000
+    IODeviceLatencyTargetSec=
+    IODeviceLatencyTargetSec=/dev/sda 25ms
+    EOF
 
-      tee "${kubelet_dropin_file}" > /dev/null <<EOF
-      [Service]
-      CPUAccounting=yes
-      MemoryAccounting=yes
-      TasksAccounting=yes
-      EOF
+    tee "${kubelet_dropin_file}" > /dev/null <<EOF
+    [Service]
+    CPUAccounting=yes
+    MemoryAccounting=yes
+    TasksAccounting=yes
+    EOF
 
-      tee "${containerd_dropin_file}" > /dev/null <<EOF
-      [Service]
-      CPUAccounting=yes
-      MemoryAccounting=yes
-      TasksAccounting=yes
-      EOF
+    tee "${containerd_dropin_file}" > /dev/null <<EOF
+    [Service]
+    CPUAccounting=yes
+    MemoryAccounting=yes
+    TasksAccounting=yes
+    EOF
 
-      # maybe easiest to kick all processes
-      reboot now
+    # maybe easiest to kick all processes
+    reboot now
