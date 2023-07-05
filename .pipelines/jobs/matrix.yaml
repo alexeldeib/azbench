@@ -4,18 +4,18 @@ parameters:
   clients: '4'
   duration: '600'
   scalefactors: [4800]
-  actions: ['kubeslice', 'kubelet_reservation', 'containerd_reservation', 'system_reservation']
+  actions: ['normal', 'kubeslice', 'test_kubeslice']
 
 jobs:
 - ${{ each action in parameters.actions }}:
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_A2_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_A2_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_A4_v2'
@@ -32,106 +32,106 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D4s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D8s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D16s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D32s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS2_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS3_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS4_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS5_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS13_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D4s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D8s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D16s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D32s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS2_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS3_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS4_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS5_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS13_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
 
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS2_v2'
-      osdisktype: 'Managed'
-      osdisksize: '512' 
-      caching: "ReadOnly" 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D4ads_v5'
-      osdisktype: 'Ephemeral'
-      osdisksize: '100' 
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D4ads_v5'
-      osdisktype: 'Managed'
-      osdisksize: '512' 
-      caching: "ReadOnly" 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS2_v2'
+  #     osdisktype: 'Managed'
+  #     osdisksize: '512' 
+  #     caching: "ReadOnly" 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D4ads_v5'
+  #     osdisktype: 'Ephemeral'
+  #     osdisksize: '100' 
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D4ads_v5'
+  #     osdisktype: 'Managed'
+  #     osdisksize: '512' 
+  #     caching: "ReadOnly" 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
