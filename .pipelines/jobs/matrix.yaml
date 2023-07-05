@@ -4,7 +4,7 @@ parameters:
   clients: '4'
   duration: '600'
   scalefactors: [4800]
-  actions: ['normal', 'kubeslice', 'test_kubeslice']
+  actions: ['test1_original', 'test2_kubeslice_upper', 'test2_kubeslice_lower', 'test3_systemslice']
 
 jobs:
 - ${{ each action in parameters.actions }}:
