@@ -8,14 +8,14 @@ parameters:
 
 jobs:
 - ${{ each action in parameters.actions }}:
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_A2_v2'
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_A2_v2'
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_A4_v2'
@@ -24,22 +24,22 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D2s_v3'
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D4s_v3'
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_D2s_v3'
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_D4s_v3'
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_D8s_v3'
