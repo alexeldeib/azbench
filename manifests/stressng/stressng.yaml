@@ -56,5 +56,5 @@ data:
     timeout 600s      # stop each stressor after 60 seconds
 
     all 8
-    vm-bytes 100%
+    vm-bytes 1G 
 ---
