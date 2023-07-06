@@ -52,11 +52,9 @@ metadata:
 data:
   jobfile: |
     # run sequential   # run stressors sequentially
-    verbose          # verbose output
     metrics-brief    # show metrics at end of run
     timeout 600s      # stop each stressor after 60 seconds
-    temp-path /tmp
 
-    all 4
-    vm-bytes 1G
+    all 8
+    vm-bytes 100%
 ---
