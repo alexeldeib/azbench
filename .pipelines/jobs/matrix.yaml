@@ -2,7 +2,7 @@ parameters:
   cache_types: ['ReadWrite', 'ReadOnly', 'None']
   jobs: '4'
   clients: '4'
-  duration: '600'
+  duration: '900'
   scalefactors: [4800]
   actions: ['donothing', 'test1_limiting_slice', 'test2_limiting_slice', 'test3_limiting_slice', 'test4_limiting_slice_reserve_kubelet', 'test5_limiting_slice_reserve_kubelet_containerd']
 
