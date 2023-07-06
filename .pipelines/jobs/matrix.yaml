@@ -4,7 +4,7 @@ parameters:
   clients: '4'
   duration: '600'
   scalefactors: [4800]
-  actions: ['test1_original', 'test2_kubeslice_upper', 'test2_kubeslice_lower', 'test3_systemslice', 'test4_kubelet']
+  actions: ['donothing', 'test1_limiting_slice', 'test2_limiting_slice', 'test3_limiting_slice', 'test4_limiting_slice_reserve_kubelet', 'test5_limiting_slice_reserve_kubelet_containerd']
 
 jobs:
 - ${{ each action in parameters.actions }}:
@@ -24,14 +24,14 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D2s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D2s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_D4s_v3'
