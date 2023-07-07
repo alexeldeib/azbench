@@ -57,7 +57,6 @@ data:
     timeout 900s      # stop each stressor after 600 seconds
     temp-path /tmp
 
-    all 8
-    vm-bytes 1G
+    all 0
     aggressive
 ---
