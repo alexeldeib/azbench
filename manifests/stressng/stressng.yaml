@@ -58,6 +58,5 @@ data:
     temp-path /tmp
 
     all 0
-    maximize
     aggressive
 ---
