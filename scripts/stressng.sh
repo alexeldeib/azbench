@@ -58,4 +58,5 @@ if grep -q 'NotReady' logs; then
     exit 1 
 fi
 
+kubectl describe node
 echo "Successfully ran stressng without failures"
