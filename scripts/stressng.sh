@@ -49,12 +49,19 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 set +o errexit
 
-timeout ${TOTAL_SECONDS}s kubectl get node -w | tee logs
+timeout ${TOTAL_SECONDS}s sh -c 'kubectl get node -w | tee >(kubectl describe node) | grep --line-buffered "NotReady\|ContainerRuntimeIsDown\|KubeletIsDown"' | tee logs
 
 if grep -q 'NotReady' logs; then
     kubectl get events
 
-    echo "some nodes went not ready during run"
+    echo "Some nodes went not ready during run"
+    exit 1 
+fi
+
+if grep -q 'ContainerRuntimeIsDown\|KubeletIsDown' logs; then
+    kubectl describe node | tee -a logs
+
+    echo "Some nodes have container runtime or kubelet issues"
     exit 1 
 fi
 
