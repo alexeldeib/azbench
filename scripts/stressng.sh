@@ -30,6 +30,7 @@ function retry() {
     done
 }
 
+kubectl describe node
 
 # errexit should be after the above, since they return non-zero exit codes (???)
 set -o errexit
