@@ -48,16 +48,10 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 set +o errexit
 
-count=0
-timeout 120s kubectl get node -w | tee logs
-tail -n 100 logs | grep 'NotReady' | while read line; do
-    ((count++))
-    if [ $count -eq 2 ]; then
-        break
-    fi
-done
+timeout ${TOTAL_SECONDS}
+COUNT=kubectl describe node | grep -c "NodeNotReady"
 
-if [ $count -lt 2 ]; then
+if [ $COUNT -ge 2 ]; then
     kubectl describe node
 
     if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
