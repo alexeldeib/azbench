@@ -30,9 +30,6 @@ function retry() {
     done
 }
 
-kubectl describe node
-echo "Right Here..."
-
 # errexit should be after the above, since they return non-zero exit codes (???)
 set -o errexit
 
@@ -51,24 +48,49 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 set +o errexit
 
+count=0
 timeout 120s kubectl get node -w | tee logs
-tail -n 100 logs
-grep 'NotReady' logs
-ret=$?
-if [ "${ret}" == "1" ]; then
-  kubectl describe node
+tail -n 100 logs | grep 'NotReady' | while read line; do
+    ((count++))
+    if [ $count -eq 2 ]; then
+        break
+    fi
+done
 
-  if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
-    echo "Container runtime went down!"
-  fi
+if [ $count -lt 2 ]; then
+    kubectl describe node
 
-  if kubectl describe node | grep -q "KubeletIsDown"; then
-    echo "Kubelet went down!"
-  fi
+    if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
+        echo "Container runtime went down!"
+    fi
 
-  echo "some nodes went not ready during run"
-  exit ${ret}
+    if kubectl describe node | grep -q "KubeletIsDown"; then
+        echo "Kubelet went down!"
+    fi
+
+    echo "some nodes went not ready during run"
+    exit 1
 fi
+
+# timeout 120s kubectl get node -w | tee logs
+# tail -n 100 logs
+# grep 'NotReady' logs
+# ret=$?
+# if [ "${ret}" == "1" ]; then
+#   kubectl describe node
+
+#   if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
+#     echo "Container runtime went down!"
+#   fi
+
+#   if kubectl describe node | grep -q "KubeletIsDown"; then
+#     echo "Kubelet went down!"
+#   fi
+
+#   echo "some nodes went not ready during run"
+#   exit ${ret}
+# fi
+
 kubectl get node
 
 if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
