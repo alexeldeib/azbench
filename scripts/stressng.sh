@@ -85,6 +85,7 @@ fi
 #   exit ${ret}
 # fi
 
+
 kubectl get node
 
 if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
