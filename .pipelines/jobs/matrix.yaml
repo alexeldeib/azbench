@@ -4,7 +4,7 @@ parameters:
   clients: '4'
   duration: '900'
   scalefactors: [4800]
-  actions: ['donothing', 'test1_limiting_system_p1', 'test1_limiting_system_p2', 'test1_limiting_system_p3', 'test1_limiting_system_p4', 'test2_limiting_kubereserved_p1', 'test2_limiting_kubereserved_p2', 'test2_limiting_kubereserved_p3', 'test2_limiting_kubereserved_p4', 'test2_limiting_kubereserved_p5', 'test3_GKE_p1',  'test3_GKE_p2', 'test4_reserves_p1']
+  actions: ['donothing', 'test1_limiting_system_p1', 'test1_limiting_system_p2', 'test1_limiting_system_p3', 'test1_limiting_system_p4']
 
 jobs:
 - ${{ each action in parameters.actions }}:
