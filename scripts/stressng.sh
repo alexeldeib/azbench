@@ -31,6 +31,7 @@ function retry() {
 }
 
 kubectl describe node
+echo "Right Here..."
 
 # errexit should be after the above, since they return non-zero exit codes (???)
 set -o errexit
