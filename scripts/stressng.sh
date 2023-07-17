@@ -48,14 +48,22 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 
 end_time=$(date -ud "$TOTAL_SECONDS seconds" +%s)
+start_time=$(date -u +%s)
 
 while [ $(date -u +%s) -le $end_time ]
 do
-        if kubectl get nodes | grep -q "NotReady"; then
-                not_ready=true
-        fi
-        sleep 1
+if kubectl get nodes | grep -q "NotReady"; then
+        not_ready=true
+fi
+
+current_time=$(date -u +%s)
+elapsed_time=$((current_time - start_time))
+percent_complete=$((elapsed_time * 100 / TOTAL_SECONDS))
+echo -ne "Elapsed time: $elapsed_time seconds / $TOTAL_SECONDS seconds ($percent_complete%)\033[0K\r"
+sleep 1
 done
+
+kubectl describe node
 
 events=$(kubectl get events --all-namespaces)
 
