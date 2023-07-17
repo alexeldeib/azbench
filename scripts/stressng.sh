@@ -67,12 +67,9 @@ kubectl describe node
 
 events=$(kubectl get events --all-namespaces)
 
-kubelet_count=0
-containerd_count=0
-
-kubelet_count=$(echo "$events" | grep "KubeletIsDown" | wc -l)
-containerd_count=$(echo "$events" | grep "ContainerdIsDown" | wc -l)
-unknown_count=$(echo "$events" | grep "Unknown" | wc -l) 
+kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
+containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
+unknown_count=$(echo "$events" | grep -c "Unknown")
 
 echo "kubelet.service went down $kubelet_count times"
 echo "containerd.service went down $containerd_count times"
