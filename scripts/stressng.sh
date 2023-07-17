@@ -70,5 +70,3 @@ kubectl describe node
 # fi
 
 echo "Successfully ran stressng without failures"
-
-
