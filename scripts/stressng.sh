@@ -49,7 +49,7 @@ kubectl describe deploy stressng
 
 current_time=$(date "+%H:%M:%S")
 echo "The current time is $current_time"
-timeout ${TOTAL_SECONDS}
+sleep ${TOTAL_SECONDS}
 
 kubectl describe node
 
