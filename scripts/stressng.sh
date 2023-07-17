@@ -47,21 +47,7 @@ kubectl describe deploy stressng
 # https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
 # timeout expected to return 124
 
-end_time=$(date -ud "$TOTAL_SECONDS seconds" +%s)
-start_time=$(date -u +%s)
-
-not_ready=false
-while [ $(date -u +%s) -le $end_time ]; do
-    if kubectl get nodes | grep -q "NotReady"; then
-            not_ready=true
-    fi
-
-    # current_time=$(date -u +%s)
-    # elapsed_time=$((current_time - start_time))
-    # percent_complete=$((elapsed_time * 100 / TOTAL_SECONDS))
-    # echo -ne "Elapsed time: $elapsed_time seconds / $TOTAL_SECONDS seconds ($percent_complete%)\033[0K\r"
-    sleep 1
-done
+sleep 300
 
 kubectl describe node
 
