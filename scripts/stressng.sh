@@ -46,44 +46,10 @@ kubectl describe deploy stressng
 # adapted from something I know does work:
 # https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
 # timeout expected to return 124
-set +o errexit
 
-# timeout ${TOTAL_SECONDS}
-# COUNT=kubectl describe node | grep -c "NodeNotReady"
-
-# if [ $COUNT -ge 2 ]; then
-#     kubectl describe node
-
-#     if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
-#         echo "Container runtime went down!"
-#     fi
-
-#     if kubectl describe node | grep -q "KubeletIsDown"; then
-#         echo "Kubelet went down!"
-#     fi
-
-#     echo "some nodes went not ready during run"
-#     exit 1
-# fi
-
-# timeout 120s kubectl get node -w | tee logs
-# tail -n 100 logs
-# grep 'NotReady' logs
-# ret=$?
-# if [ "${ret}" == "1" ]; then
-#   kubectl describe node
-
-#   if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
-#     echo "Container runtime went down!"
-#   fi
-
-#   if kubectl describe node | grep -q "KubeletIsDown"; then
-#     echo "Kubelet went down!"
-#   fi
-
-#   echo "some nodes went not ready during run"
-#   exit ${ret}
-# fi
+current_time=$(date "+%H:%M:%S")
+echo "The current time is $current_time"
+timeout ${TOTAL_SECONDS}
 
 kubectl describe node
 
