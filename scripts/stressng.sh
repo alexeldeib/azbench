@@ -47,7 +47,7 @@ kubectl describe deploy stressng
 # https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
 # timeout expected to return 124
 
-sleep ${TOTAL_SECONDS}
+# sleep ${TOTAL_SECONDS}
 # timeout ${TOTAL_SECONDS}s kubectl get node -w > logs
 # grep 'NotReady' logs
 # ret=$?
