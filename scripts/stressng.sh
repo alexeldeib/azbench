@@ -7,7 +7,7 @@ export PATH=$PATH:${HOME}/bin
 
 BASH_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
 cd "$BASH_ROOT"
-TOTAL_SECONDS=600
+TOTAL_SECONDS=400
 
 # Retries a command on failure.
 # $1 - the max number of attempts
@@ -47,9 +47,12 @@ kubectl describe deploy stressng
 # https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
 # timeout expected to return 124
 
-sleep 300
+sleep ${TOTAL_SECONDS}
+# timeout ${TOTAL_SECONDS}s kubectl get node -w > logs
+# grep 'NotReady' logs
+# ret=$?
 
-kubectl describe node
+# kubectl describe node
 
 events=$(kubectl get events --all-namespaces)
 
@@ -60,4 +63,12 @@ unknown_count=$(echo "$events" | grep -c "Unknown")
 echo "kubelet.service went down $kubelet_count times"
 echo "containerd.service went down $containerd_count times"
 echo "essential k8s services went unknown $unknown_count times" 
-[ "$not_ready" = true ] && echo "Some nodes went not ready" || echo "All nodes were ready"
+
+# if [ "${ret}" == "1" ]; then
+#   echo "some nodes went not ready during run"
+#   exit ${ret}
+# fi
+
+# echo "Successfully ran stressng without failures"
+
+
