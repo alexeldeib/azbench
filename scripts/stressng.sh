@@ -54,19 +54,19 @@ kubectl describe deploy stressng
 
 kubectl describe node
 
-# events=$(kubectl get events --all-namespaces)
+events=$(kubectl get events --all-namespaces)
 
-# kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
-# containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
-# unknown_count=$(echo "$events" | grep -c "Unknown")
+kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
+containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
+unknown_count=$(echo "$events" | grep -c "Unknown")
 
-# echo "kubelet.service went down $kubelet_count times"
-# echo "containerd.service went down $containerd_count times"
-# echo "essential k8s services went unknown $unknown_count times" 
+echo "kubelet.service went down $kubelet_count times"
+echo "containerd.service went down $containerd_count times"
+echo "essential k8s services went unknown $unknown_count times" 
 
-# if [ "${ret}" == "1" ]; then
-#   echo "some nodes went not ready during run"
-#   exit ${ret}
-# fi
+if [ "${ret}" == "1" ]; then
+  echo "some nodes went not ready during run"
+  exit ${ret}
+fi
 
 echo "Successfully ran stressng without failures"
