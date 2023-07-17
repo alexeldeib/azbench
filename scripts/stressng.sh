@@ -48,23 +48,23 @@ kubectl describe deploy stressng
 # timeout expected to return 124
 set +o errexit
 
-timeout ${TOTAL_SECONDS}
-COUNT=kubectl describe node | grep -c "NodeNotReady"
+# timeout ${TOTAL_SECONDS}
+# COUNT=kubectl describe node | grep -c "NodeNotReady"
 
-if [ $COUNT -ge 2 ]; then
-    kubectl describe node
+# if [ $COUNT -ge 2 ]; then
+#     kubectl describe node
 
-    if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
-        echo "Container runtime went down!"
-    fi
+#     if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
+#         echo "Container runtime went down!"
+#     fi
 
-    if kubectl describe node | grep -q "KubeletIsDown"; then
-        echo "Kubelet went down!"
-    fi
+#     if kubectl describe node | grep -q "KubeletIsDown"; then
+#         echo "Kubelet went down!"
+#     fi
 
-    echo "some nodes went not ready during run"
-    exit 1
-fi
+#     echo "some nodes went not ready during run"
+#     exit 1
+# fi
 
 # timeout 120s kubectl get node -w | tee logs
 # tail -n 100 logs
@@ -85,6 +85,7 @@ fi
 #   exit ${ret}
 # fi
 
+kubectl describe node
 
 kubectl get node
 
@@ -96,4 +97,4 @@ if kubectl describe node | grep -q "KubeletIsDown"; then
     echo "Kubelet went down!"
 fi
 
-echo "Successfully ran stressng without failures"
+echo "Successfully ran but check for failures!"

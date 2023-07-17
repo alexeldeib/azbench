@@ -57,12 +57,7 @@ data:
     timeout 900s      # stop each stressor after 600 seconds
     temp-path /tmp
 
-    cpu 2
-    io 2 
-    vm 1
-
-    # all 0
-    # class cpu,io,vm
-    # vm-bytes 100%
-    # 'test2_limiting_kubereserved_p1', 'test2_limiting_kubereserved_p2', 'test2_limiting_kubereserved_p3', 'test2_limiting_kubereserved_p4', 'test2_limiting_kubereserved_p5', 'test3_GKE_p1',  'test3_GKE_p2', 'test4_reserves_p1'
+    all 0
+    class cpu,io,vm
+    vm-bytes 100%
 ---
