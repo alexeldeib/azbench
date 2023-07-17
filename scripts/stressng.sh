@@ -47,20 +47,26 @@ kubectl describe deploy stressng
 # https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
 # timeout expected to return 124
 
-current_time=$(date "+%H:%M:%S")
-echo "The current time is $current_time"
-sleep ${TOTAL_SECONDS}
+end_time=$(date -ud "$TOTAL_SECONDS seconds" +%s)
 
-kubectl describe node
+while [ $(date -u +%s) -le $end_time ]
+do
+        if kubectl get nodes | grep -q "NotReady"; then
+                not_ready=true
+        fi
+        sleep 1
+done
 
-kubectl get node
+events=$(kubectl get events --all-namespaces)
 
-if kubectl describe node | grep -q "ContainerRuntimeIsDown"; then
-    echo "Container runtime went down!"
-fi
+kubelet_count=0
+containerd_count=0
 
-if kubectl describe node | grep -q "KubeletIsDown"; then
-    echo "Kubelet went down!"
-fi
+kubelet_count=$(echo "$events" | grep "KubeletIsDown" | wc -l)
+containerd_count=$(echo "$events" | grep "ContainerdIsDown" | wc -l)
+unknown_count=$(echo "$events" | grep "Unknown" | wc -l) 
 
-echo "Successfully ran but check for failures!"
+echo "kubelet.service went down $kubelet_count times"
+echo "containerd.service went down $containerd_count times"
+echo "essential k8s services went unknown $unknown_count times" 
+[ "$not_ready" = true ] && echo "Some nodes went not ready" || echo "All nodes were ready"
