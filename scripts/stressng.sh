@@ -37,7 +37,6 @@ echo "Applying stressng manifests"
 # kubectl create -f manifests/stressng/stressng.yaml
 kustomize build manifests/stressng | kubectl apply -f -
 
-sleep 10
 echo "Waiting for stressng rollout"
 retry 3 kubectl rollout status deploy/stressng
 
@@ -45,23 +44,33 @@ kubectl describe deploy stressng
 
 echo "Finished stressng deployment"
 
-touch logs.txt
-timeout ${TOTAL_SECONDS}s kubectl get node -w > logs.txt
+set +o errexit
 
-events=$(kubectl describe node)
+timeout 120s kubectl get node -w | tee logs
+tail -n 100 logs
+grep 'NotReady' logs
+ret=$?
+if [ "${ret}" == "1" ]; then
+  kubectl describe node
+  echo "some nodes went not ready during run"
+  exit ${ret}
+fi
+kubectl get node
 
-notready_count=$(grep -c 'NotReady' logs.txt)
-kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
-containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
-unknown_count=$(echo "$events" | grep -c "Unknown")
+echo "Successfully ran stressng without failures"
 
-echo "--------------------------------------------------------"
-echo "kubelet.service went down $kubelet_count times"
-echo "containerd.service went down $containerd_count times"
-echo "essential k8s services went unknown $unknown_count times" 
-echo "--------------------------------------------------------"
-echo "node went NotReady $notready_count times"
-echo "--------------------------------------------------------"
-echo "Successfully ran"
+# events=$(kubectl describe node)
 
-cat logs.txt
+# notready_count=$(grep -c 'NotReady' logs.txt)
+# kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
+# containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
+# unknown_count=$(echo "$events" | grep -c "Unknown")
+
+# echo "--------------------------------------------------------"
+# echo "kubelet.service went down $kubelet_count times"
+# echo "containerd.service went down $containerd_count times"
+# echo "essential k8s services went unknown $unknown_count times" 
+# echo "--------------------------------------------------------"
+# echo "node went NotReady $notready_count times"
+# echo "--------------------------------------------------------"
+# echo "Successfully ran"
