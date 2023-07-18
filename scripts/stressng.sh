@@ -52,7 +52,8 @@ ret=$?
 
 events=$(kubectl describe node)
 
-notready_count=$(grep -c 'NotReady' logs.txt)
+kubectl describe node
+
 kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
 containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
 unknown_count=$(echo "$events" | grep -c "Unknown")
@@ -61,15 +62,13 @@ echo "--------------------------------------------------------"
 echo "*** kubelet.service went down $kubelet_count times"
 echo "*** containerd.service went down $containerd_count times"
 echo "*** essential k8s services went unknown $unknown_count times" 
-echo "*** node went NotReady ${ret} occurances"
+echo "*** node went NotReady due to stress $((ret-1)) occurances"
 echo "--------------------------------------------------------"
 
 if [ "${ret}" -gt 2 ]; then
-  kubectl describe node
   echo "some nodes went not ready during run"
-  exit ${ret}
+  exit ${1}
 fi
 
-kubectl describe node
 echo "Successfully ran stressng without failures"
 
