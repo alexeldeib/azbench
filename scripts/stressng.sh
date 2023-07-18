@@ -31,7 +31,7 @@ function retry() {
 }
 
 # errexit should be after the above, since they return non-zero exit codes (???)
-set -o errexit
+# set -o errexit
 
 echo "Applying stressng manifests"
 kubectl create -f manifests/stressng/stressng.yaml
