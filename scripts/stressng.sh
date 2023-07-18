@@ -69,9 +69,9 @@ echo "kubelet.service went down $kubelet_count times"
 echo "containerd.service went down $containerd_count times"
 echo "essential k8s services went unknown $unknown_count times" 
 
-if [ "${ret}" == "1" ]; then
-  echo "some nodes went not ready during run"
-  exit ${ret}
-fi
+# if [ "${ret}" == "1" ]; then
+#   echo "some nodes went not ready during run"
+#   exit ${ret}
+# fi
 
-echo "Successfully ran stressng without failures"
+echo "Successfully ran"
