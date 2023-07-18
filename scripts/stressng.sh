@@ -52,9 +52,14 @@ kubectl describe deploy stressng
 # grep 'NotReady' logs
 # ret=$?
 
-kubectl describe node
+# kubectl describe node
 
-events=$(kubectl get events --all-namespaces)
+events=$(kubectl describe node --all-namespaces)
+
+kubelet_count=0
+containerd_count=0
+unknown_count=0
+
 
 kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
 containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
