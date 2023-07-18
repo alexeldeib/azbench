@@ -34,8 +34,8 @@ function retry() {
 # set -o errexit
 
 echo "Applying stressng manifests"
-kubectl create -f manifests/stressng/stressng.yaml
-# kustomize build manifests/stressng | kubectl apply -f -
+# kubectl create -f manifests/stressng/stressng.yaml
+kustomize build manifests/stressng | kubectl apply -f -
 
 sleep 10
 echo "Waiting for stressng rollout"
@@ -43,15 +43,12 @@ retry 3 kubectl rollout status deploy/stressng
 
 kubectl describe deploy stressng
 
-echo "Finished deployment"
+echo "Finished stressng deployment"
 
 touch logs.txt
-# sleep ${TOTAL_SECONDS}
 timeout ${TOTAL_SECONDS}s kubectl get node -w > logs.txt
 
-events=$(kubectl describe node --all-namespaces)
-
-kubectl describe node
+events=$(kubectl describe node)
 
 notready_count=$(grep -c 'NotReady' logs.txt)
 kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
