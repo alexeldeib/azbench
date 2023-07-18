@@ -60,6 +60,4 @@ data:
     all 0
     class cpu,cpu-cache,io,os,scheduler,vm
     aggressive
-    maximize
-    vm-bytes 100%
 ---
