@@ -58,6 +58,9 @@ data:
     temp-path /tmp
 
     all 0
-    class cpu,cpu-cache,io,os,scheduler
-    aggressive
+    class cpu, vm
+
+    # all 0
+    # class cpu,cpu-cache,io,os,scheduler
+    # aggressive
 ---
