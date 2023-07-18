@@ -63,6 +63,8 @@ echo "kubelet.service went down $kubelet_count times"
 echo "containerd.service went down $containerd_count times"
 echo "essential k8s services went unknown $unknown_count times" 
 echo "--------------------------------------------------------"
-echo "node went 'NotReady' $notready_count times"
+echo "node went NotReady $notready_count times"
 echo "--------------------------------------------------------"
 echo "Successfully ran"
+
+cat logs.txt
