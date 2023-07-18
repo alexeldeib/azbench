@@ -34,44 +34,35 @@ function retry() {
 set -o errexit
 
 echo "Applying stressng manifests"
-# kubectl create -f manifests/stressng/stressng.yaml
-kustomize build manifests/stressng | kubectl apply -f -
+kubectl create -f manifests/stressng/stressng.yaml
+# kustomize build manifests/stressng | kubectl apply -f -
 
+sleep 10
 echo "Waiting for stressng rollout"
 retry 3 kubectl rollout status deploy/stressng
 
 kubectl describe deploy stressng
 
-# no idea if this works
-# adapted from something I know does work:
-# https://github.com/Azure/AgentBaker/pull/2535/files#diff-1f36afed0398c5c4a7d571e9b4f5ad52236fbf7dbb33cf44f8e2bf17a56f23feR10
-# timeout expected to return 124
+echo "Finished deployment"
 
-# sleep ${TOTAL_SECONDS}
-# timeout ${TOTAL_SECONDS}s kubectl get node -w > logs
-# grep 'NotReady' logs
-# ret=$?
-
-# kubectl describe node
+touch logs.txt
+sleep ${TOTAL_SECONDS}
+timeout ${TOTAL_SECONDS}s kubectl get node -w > logs.txt
 
 events=$(kubectl describe node --all-namespaces)
 
-kubelet_count=0
-containerd_count=0
-unknown_count=0
+kubectl describe node
 
-
+notready_count=$(grep -c 'NotReady' logs.txt)
 kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
 containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
 unknown_count=$(echo "$events" | grep -c "Unknown")
 
+echo "--------------------------------------------------------"
 echo "kubelet.service went down $kubelet_count times"
 echo "containerd.service went down $containerd_count times"
 echo "essential k8s services went unknown $unknown_count times" 
-
-# if [ "${ret}" == "1" ]; then
-#   echo "some nodes went not ready during run"
-#   exit ${ret}
-# fi
-
+echo "--------------------------------------------------------"
+echo "node went 'NotReady' $notready_count times"
+echo "--------------------------------------------------------"
 echo "Successfully ran"
