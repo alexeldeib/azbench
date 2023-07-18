@@ -54,7 +54,7 @@ data:
     # run sequential   # run stressors sequentially
     verbose          # verbose output
     metrics-brief    # show metrics at end of run
-    timeout 900s      # stop each stressor after 600 seconds
+    timeout 600s      # stop each stressor after 600 seconds
     temp-path /tmp
 
     all 0
