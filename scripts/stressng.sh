@@ -50,20 +50,18 @@ timeout 120s kubectl get node -w | tee logs
 tail -n 100 logs | grep -c 'NotReady'
 ret=$?
 
-echo "Successfully ran with ${ret} occurances of NotReady"
+events=$(kubectl describe node)
 
-# events=$(kubectl describe node)
+notready_count=$(grep -c 'NotReady' logs.txt)
+kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
+containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
+unknown_count=$(echo "$events" | grep -c "Unknown")
 
-# notready_count=$(grep -c 'NotReady' logs.txt)
-# kubelet_count=$(echo "$events" | grep -c "KubeletIsDown")
-# containerd_count=$(echo "$events" | grep -c "ContainerdIsDown")
-# unknown_count=$(echo "$events" | grep -c "Unknown")
-
-# echo "--------------------------------------------------------"
-# echo "kubelet.service went down $kubelet_count times"
-# echo "containerd.service went down $containerd_count times"
-# echo "essential k8s services went unknown $unknown_count times" 
-# echo "--------------------------------------------------------"
-# echo "node went NotReady $notready_count times"
-# echo "--------------------------------------------------------"
-# echo "Successfully ran"
+echo "--------------------------------------------------------"
+echo "kubelet.service went down $kubelet_count times"
+echo "containerd.service went down $containerd_count times"
+echo "essential k8s services went unknown $unknown_count times" 
+echo "--------------------------------------------------------"
+echo "node went NotReady ${ret} occurances"
+echo "--------------------------------------------------------"
+echo "Successfully ran"
