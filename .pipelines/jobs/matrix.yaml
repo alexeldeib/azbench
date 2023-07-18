@@ -114,23 +114,23 @@ jobs:
   #     client: '${{ parameters.clients }}'
   #     duration: '${{ parameters.duration }}'
   #     action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D4ads_v5'
-  #     osdisktype: 'Ephemeral'
-  #     osdisksize: '100' 
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D4ads_v5'
-  #     osdisktype: 'Managed'
-  #     osdisksize: '512' 
-  #     caching: "ReadOnly" 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_D4ads_v5'
+      osdisktype: 'Ephemeral'
+      osdisksize: '100' 
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_D4ads_v5'
+      osdisktype: 'Managed'
+      osdisksize: '512' 
+      caching: "ReadOnly" 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
