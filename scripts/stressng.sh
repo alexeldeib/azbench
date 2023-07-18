@@ -7,7 +7,7 @@ export PATH=$PATH:${HOME}/bin
 
 BASH_ROOT="$(dirname "${BASH_SOURCE[0]}")/.."
 cd "$BASH_ROOT"
-TOTAL_SECONDS=400
+TOTAL_SECONDS=10
 
 # Retries a command on failure.
 # $1 - the max number of attempts
@@ -46,7 +46,7 @@ kubectl describe deploy stressng
 echo "Finished deployment"
 
 touch logs.txt
-sleep ${TOTAL_SECONDS}
+# sleep ${TOTAL_SECONDS}
 timeout ${TOTAL_SECONDS}s kubectl get node -w > logs.txt
 
 events=$(kubectl describe node --all-namespaces)
