@@ -4,19 +4,7 @@ parameters:
   clients: '4'
   duration: '900'
   scalefactors: [4800]
-  actions: ['donothing', 'system_slice',
-'system_slice_25_kr_min',
-'system_slice_50_kr_min',
-'system_slice_75_kr_min',
-'system_slice_100_kr_min',
-'system_slice_125_kr_min',
-'system_slice_150_kr_min',
-'system_slice_25_kr_min_and_max',
-'system_slice_50_kr_min_and_max',
-'system_slice_75_kr_min_and_max',
-'system_slice_100_kr_min_and_max',
-'system_slice_125_kr_min_and_max',
-'system_slice_150_kr_min_and_max']
+  actions: ['donothing', 'system_slice', 'system_slice_25_kr_min', 'system_slice_50_kr_min', 'system_slice_75_kr_min','system_slice_100_kr_min', 'system_slice_125_kr_min']
 
 jobs:
 - ${{ each action in parameters.actions }}:
@@ -28,22 +16,22 @@ jobs:
   #     client: '${{ parameters.clients }}'
   #     duration: '${{ parameters.duration }}'
   #     action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_A4_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D2s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_A4_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D2s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_D4s_v3'
@@ -52,22 +40,22 @@ jobs:
   #     client: '${{ parameters.clients }}'
   #     duration: '${{ parameters.duration }}'
   #     action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D8s_v3'
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_D16s_v3'
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_D8s_v3'
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_D16s_v3'
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_D32s_v3'
@@ -75,15 +63,15 @@ jobs:
   #     jobs: '${{ parameters.jobs }}'
   #     client: '${{ parameters.clients }}'
   #     duration: '${{ parameters.duration }}'
+  # #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_DS2_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
   #     action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_DS2_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_DS3_v2'
