@@ -46,7 +46,7 @@ echo "Finished stressng deployment"
 
 set +o errexit
 
-sleep 600
+sleep 900
 
 echo "1) Describing Node..."
 kubectl describe node

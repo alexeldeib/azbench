@@ -4,18 +4,30 @@ parameters:
   clients: '4'
   duration: '900'
   scalefactors: [4800]
-  actions: ['donothing', 'kubereserved_slice']
+  actions: ['donothing', 'system_slice',
+'system_slice_25_kr_min',
+'system_slice_50_kr_min',
+'system_slice_75_kr_min',
+'system_slice_100_kr_min',
+'system_slice_125_kr_min',
+'system_slice_150_kr_min',
+'system_slice_25_kr_min_and_max',
+'system_slice_50_kr_min_and_max',
+'system_slice_75_kr_min_and_max',
+'system_slice_100_kr_min_and_max',
+'system_slice_125_kr_min_and_max',
+'system_slice_150_kr_min_and_max']
 
 jobs:
 - ${{ each action in parameters.actions }}:
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_A2_v2'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_A2_v2'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
   - template: stressng.yaml
     parameters:
       vmsize: 'Standard_A4_v2'
@@ -32,14 +44,14 @@ jobs:
       client: '${{ parameters.clients }}'
       duration: '${{ parameters.duration }}'
       action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D4s_v3'
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D4s_v3'
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_D8s_v3'
@@ -64,14 +76,14 @@ jobs:
   #     client: '${{ parameters.clients }}'
   #     duration: '${{ parameters.duration }}'
   #     action: '${{ action }}'
-  # - template: stressng.yaml
-  #   parameters:
-  #     vmsize: 'Standard_DS2_v2'
-  #     caching: ReadOnly 
-  #     jobs: '${{ parameters.jobs }}'
-  #     client: '${{ parameters.clients }}'
-  #     duration: '${{ parameters.duration }}'
-  #     action: '${{ action }}'
+  - template: stressng.yaml
+    parameters:
+      vmsize: 'Standard_DS2_v2'
+      caching: ReadOnly 
+      jobs: '${{ parameters.jobs }}'
+      client: '${{ parameters.clients }}'
+      duration: '${{ parameters.duration }}'
+      action: '${{ action }}'
   # - template: stressng.yaml
   #   parameters:
   #     vmsize: 'Standard_DS3_v2'
@@ -114,23 +126,23 @@ jobs:
   #     client: '${{ parameters.clients }}'
   #     duration: '${{ parameters.duration }}'
   #     action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D4ads_v5'
-      osdisktype: 'Ephemeral'
-      osdisksize: '100' 
-      caching: ReadOnly 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
-  - template: stressng.yaml
-    parameters:
-      vmsize: 'Standard_D4ads_v5'
-      osdisktype: 'Managed'
-      osdisksize: '512' 
-      caching: "ReadOnly" 
-      jobs: '${{ parameters.jobs }}'
-      client: '${{ parameters.clients }}'
-      duration: '${{ parameters.duration }}'
-      action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D4ads_v5'
+  #     osdisktype: 'Ephemeral'
+  #     osdisksize: '100' 
+  #     caching: ReadOnly 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
+  # - template: stressng.yaml
+  #   parameters:
+  #     vmsize: 'Standard_D4ads_v5'
+  #     osdisktype: 'Managed'
+  #     osdisksize: '512' 
+  #     caching: "ReadOnly" 
+  #     jobs: '${{ parameters.jobs }}'
+  #     client: '${{ parameters.clients }}'
+  #     duration: '${{ parameters.duration }}'
+  #     action: '${{ action }}'
