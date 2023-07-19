@@ -46,8 +46,8 @@ echo "Finished stressng deployment"
 
 set +o errexit
 
-timeout 600s kubectl get node -w | tee logs
-logs | grep -c 'NotReady'
+sleep 600
+kubectl get events | grep -c 'NodeNotReady'
 ret=$?
 
 echo "Describing Node..."
