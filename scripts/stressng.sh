@@ -47,19 +47,19 @@ echo "Finished stressng deployment"
 set +o errexit
 
 sleep 600
-kubectl get events | grep -c 'NodeNotReady'
-ret=$?
 
-echo "Describing Node..."
+echo "1) Describing Node..."
 kubectl describe node
 
-echo "Getting Events..."
+echo "2) Getting Events..."
 kubectl get events
 
+ret=$(kubectl get events | grep -c 'NodeNotReady')
 kubelet_count=$(kubectl get events | grep -c "KubeletIsDown")
 containerd_count=$(kubectl get events | grep -c "ContainerdIsDown")
 unknown_count=$(kubectl get events | grep -c "Unknown")
 
+echo "3) Printing Results..."
 echo "--------------------------------------------------------"
 echo "*** kubelet.service went down $kubelet_count times"
 echo "*** containerd.service went down $containerd_count times"
