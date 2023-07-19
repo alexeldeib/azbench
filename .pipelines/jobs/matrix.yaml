@@ -2,7 +2,7 @@ parameters:
   cache_types: ['ReadWrite', 'ReadOnly', 'None']
   jobs: '4'
   clients: '4'
-  duration: '900'
+  duration: '600'
   scalefactors: [4800]
   actions: ['donothing', 'system_slice', 'system_slice_25_kr_min', 'system_slice_50_kr_min', 'system_slice_75_kr_min','system_slice_100_kr_min', 'system_slice_125_kr_min']
 
