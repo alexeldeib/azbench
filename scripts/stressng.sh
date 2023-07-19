@@ -50,6 +50,12 @@ timeout 600s kubectl get node -w | tee logs
 logs | grep -c 'NotReady'
 ret=$?
 
+echo "Describing Node..."
+kubectl describe node
+
+echo "Getting Events..."
+kubectl get events
+
 kubelet_count=$(kubectl get events | grep -c "KubeletIsDown")
 containerd_count=$(kubectl get events | grep -c "ContainerdIsDown")
 unknown_count=$(kubectl get events | grep -c "Unknown")
