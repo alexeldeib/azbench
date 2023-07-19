@@ -74,3 +74,6 @@ fi
 
 echo "Successfully ran stressng without failures"
 
+# 'system_slice_25_kr_min', 'system_slice_50_kr_min', 'system_slice_75_kr_min','system_slice_100_kr_min', 'system_slice_125_kr_min'
+# 'system_slice_150_kr_min', 'system_slice_25_kr_min_and_max', 'system_slice_50_kr_min_and_max', 'system_slice_75_kr_min_and_max', 'system_slice_100_kr_min_and_max', 'system_slice_125_kr_min_and_max', 'system_slice_150_kr_min_and_max'
+
